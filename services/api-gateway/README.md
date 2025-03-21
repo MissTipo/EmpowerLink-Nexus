@@ -64,7 +64,7 @@ Install the required packages:
 Running the API Gateway
 
 Start the FastAPI server using Uvicorn:
-```bash```
+```bash
 uvicorn src.app:app --reload
 ```
 
