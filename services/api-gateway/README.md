@@ -43,19 +43,19 @@ api-gateway/
 
 ### Installation Steps
 
-    Clone the repository:
+__Clone the repository:__
 ```bash
 git clone <repository-url>
 cd EmpowerLink-Nexus/services/api-gateway
 ```
 
-Create and activate a virtual environment (optional):
+__Create and activate a virtual environment (optional):__
 ```bash
 python -m venv venv
 source venv/bin/activate   # On Windows: venv\Scripts\activate
 ```
 
-Install the required packages:
+__Install the required packages:__
 ```bash
     pip install -r requirements.txt
 ```
@@ -64,7 +64,7 @@ Install the required packages:
 
 ### Running the API Gateway
 
-Start the FastAPI server using Uvicorn:
+__Start the FastAPI server using Uvicorn:__
 ```bash
 uvicorn src.app:app --reload
 ```
@@ -80,7 +80,7 @@ This structure enables a clear separation of concerns, making it easier to updat
 
 ## Contributing
 
-Contributions are welcome! Please follow these steps:
+__Contributions are welcome! Please follow these steps:__
 
     Fork the repository.
     Create a new branch for your feature or bug fix.
