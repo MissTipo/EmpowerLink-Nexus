@@ -45,7 +45,9 @@ api-gateway/
 
 __Clone the repository:__
 ```bash
-git clone <repository-url>
+git clone https://github.com/MissTipo/EmpowerLink-Nexus.git
+```
+```bash
 cd EmpowerLink-Nexus/services/api-gateway
 ```
 
