@@ -1,0 +1,21 @@
+# Inclusivity Index Types
+type InclusivityIndex {
+  score: Float!
+  genderEquity: Float!
+  accessToLegalAid: Float!
+}
+
+input InclusivityDataInput {
+  score: Float!
+  genderEquity: Float!
+  accessToLegalAid: Float!
+}
+
+extend type Query {
+  getInclusivityIndex: InclusivityIndex
+}
+
+extend type Mutation {
+  updateInclusivityIndex(data: InclusivityDataInput!): InclusivityIndex
+}
+

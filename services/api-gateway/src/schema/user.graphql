@@ -1,0 +1,25 @@
+# User Profile Types
+type UserProfile {
+  id: ID!
+  name: String!
+  gender: String
+  age: Int
+  location: String
+}
+
+input UserProfileInput {
+  name: String!
+  gender: String
+  age: Int
+  location: String
+}
+
+extend type Query {
+  getUserProfile(id: ID!): UserProfile
+}
+
+extend type Mutation {
+  createUserProfile(input: UserProfileInput!): UserProfile
+  updateUserProfile(id: ID!, input: UserProfileInput!): UserProfile
+}
+

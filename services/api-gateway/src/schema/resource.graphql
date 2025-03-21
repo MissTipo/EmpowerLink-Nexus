@@ -1,0 +1,23 @@
+# Resource Matching Types
+type Resource {
+  id: ID!
+  type: String!
+  description: String
+  location: String
+}
+
+type ResourceMatch {
+  userId: ID!
+  resourceId: ID!
+  matchedAt: String
+}
+
+extend type Query {
+  getMatchingResources(userId: ID!): [Resource]
+  getAvailableResources: [Resource]
+}
+
+extend type Mutation {
+  requestResourceMatching(userId: ID!, resourceId: ID!): ResourceMatch
+}
+

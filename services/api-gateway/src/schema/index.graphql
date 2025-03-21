@@ -1,0 +1,16 @@
+# Root schema (imports sub-schemas)
+
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+# Root Query and Mutation types – they get extended in the individual schema files.
+type Query {
+  _empty: String
+}
+
+type Mutation {
+  _empty: String
+}
+
