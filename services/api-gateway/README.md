@@ -33,15 +33,15 @@ api-gateway/
 │       ├── geospatial_resolver.py
 │       └── telephony_resolver.py
 └── README.md                # This file.
-
-Setup & Installation
-Prerequisites
+```
+## Setup & Installation
+### Prerequisites
 
     Python 3.8+
     pip
     Virtual environment tool (optional but recommended)
 
-Installation Steps
+### Installation Steps
 
     Clone the repository:
 ```bash
@@ -56,12 +56,13 @@ source venv/bin/activate   # On Windows: venv\Scripts\activate
 ```
 
 Install the required packages:
-```bash```
+```bash
     pip install -r requirements.txt
+```
 
         Note: The requirements.txt file is generated from requirements.in and includes all necessary dependencies such as FastAPI, Ariadne, and supporting libraries.
 
-Running the API Gateway
+### Running the API Gateway
 
 Start the FastAPI server using Uvicorn:
 ```bash
