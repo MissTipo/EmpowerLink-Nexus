@@ -21,3 +21,9 @@ extend type Mutation {
   requestResourceMatching(userId: ID!, resourceId: ID!): ResourceMatch
 }
 
+# Adding Resources
+extend type Mutation {
+  addResource(type: String!, description: String, location: String): Resource
+}
+
+

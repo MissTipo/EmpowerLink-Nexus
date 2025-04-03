@@ -7,8 +7,9 @@ def resolve_getUserProfile(_, info, id):
 def resolve_getMatchingResources(_, info, userId):
     return []
 
+from .resource_resolver import resources
 def resolve_getAvailableResources(_, info):
-    return []
+    return resources
 
 def resolve_getInclusivityIndex(_, info):
     return {"score": 0.0, "genderEquity": 0.0, "accessToLegalAid": 0.0}
