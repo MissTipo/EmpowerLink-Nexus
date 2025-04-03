@@ -2,6 +2,8 @@ import os
 from fastapi import FastAPI
 from ariadne import load_schema_from_path, make_executable_schema, QueryType, MutationType
 from ariadne.asgi import GraphQL
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
 
 # Import resolvers from the resolvers directory
 from .resolvers.query_resolver import (
@@ -15,7 +17,7 @@ from .resolvers.query_resolver import (
 )
 from .resolvers.feedback_resolver import resolve_submitReport, resolve_submitFeedback
 from .resolvers.inclusivity_resolver import resolve_updateInclusivityIndex
-from .resolvers.resource_resolver import resolve_requestResourceMatching
+from .resolvers.resource_resolver import resolve_requestResourceMatching, resolve_addResource
 from .resolvers.geospatial_resolver import resolve_addResourceLocation
 from .resolvers.telephony_resolver import resolve_logIVRInteraction
 
@@ -38,6 +40,7 @@ mutation.set_field("updateUserProfile", lambda obj, info, id, input: {"id": id, 
 mutation.set_field("requestResourceMatching", resolve_requestResourceMatching)
 mutation.set_field("updateInclusivityIndex", resolve_updateInclusivityIndex)
 mutation.set_field("addResourceLocation", resolve_addResourceLocation)
+mutation.set_field("addResource", resolve_addResource)
 mutation.set_field("submitReport", resolve_submitReport)
 mutation.set_field("submitFeedback", resolve_submitFeedback)
 mutation.set_field("logIVRInteraction", resolve_logIVRInteraction)
@@ -51,6 +54,26 @@ schema = make_executable_schema(type_defs, query, mutation)
 
 # Initialize FastAPI and mount the GraphQL app
 app = FastAPI()
+
+# Redirect /graphql to /graphql/
+@app.get("/graphql")
+async def graphql_redirect():
+    return RedirectResponse(url="/graphql/")
+
+# Add CORS middleware to allow requests from localhost:3000
+origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all HTTP methods
+    allow_headers=["*"],  # Allows all headers
+)
+
 app.mount("/graphql", GraphQL(schema, debug=True))
 
 if __name__ == "__main__":
