@@ -66,6 +66,7 @@ ENV/
 env/
 .venv/
 gateway/
+profile/
 
 # VS Code
 .vscode/
