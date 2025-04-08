@@ -1,0 +1,34 @@
+# user-profile-service/app/graphql/schema.graphql
+
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type UserProfile {
+  id: ID!
+  phone_number: String!
+  name: String
+  gender: String
+  age: Int
+  location: String
+  created_at: String
+}
+
+input UserProfileInput {
+  phone_number: String!
+  name: String
+  gender: String
+  age: Int
+  location: String
+}
+
+type Query {
+  getUserProfile(id: ID!): UserProfile
+}
+
+type Mutation {
+  createUserProfile(input: UserProfileInput!): UserProfile
+  updateUserProfile(id: ID!, input: UserProfileInput!): UserProfile
+}
+
