@@ -4,6 +4,7 @@ fastapi
 graphql-core
 h11
 httptools
+httpx
 idna
 psycopg2-binary
 pydantic

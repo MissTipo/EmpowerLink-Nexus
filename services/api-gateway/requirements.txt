@@ -9,12 +9,16 @@ annotated-types==0.7.0
 anyio==4.9.0
     # via
     #   -r requirements.in
+    #   httpx
     #   starlette
     #   watchfiles
 ariadne==0.26.1
     # via -r requirements.in
 certifi==2025.1.31
-    # via requests
+    # via
+    #   httpcore
+    #   httpx
+    #   requests
 charset-normalizer==3.4.1
     # via requests
 click==8.1.8
@@ -32,13 +36,19 @@ greenlet==3.1.1
 h11==0.14.0
     # via
     #   -r requirements.in
+    #   httpcore
     #   uvicorn
+httpcore==1.0.7
+    # via httpx
 httptools==0.6.4
+    # via -r requirements.in
+httpx==0.28.1
     # via -r requirements.in
 idna==3.10
     # via
     #   -r requirements.in
     #   anyio
+    #   httpx
     #   requests
 iniconfig==2.1.0
     # via pytest
