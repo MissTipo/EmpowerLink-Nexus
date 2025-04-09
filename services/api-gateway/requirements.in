@@ -8,6 +8,7 @@ idna
 psycopg2-binary
 pydantic
 python-dateutil
+pytest
 python-decouple
 python-dotenv
 python-multipart
