@@ -73,6 +73,11 @@ uvicorn src.app:app --reload
 
 The API Gateway will be available at http://localhost:8000/graphql, where you can interact with the GraphQL playground.
 
+## Testing
+```bash
+python3 -m pytest
+```
+
 ## GraphQL Schema & Resolvers
 
     Schema Files: Located in src/schema/, these files define types, queries, and mutations using the GraphQL SDL.
