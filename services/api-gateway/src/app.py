@@ -55,11 +55,6 @@ schema = make_executable_schema(type_defs, query, mutation)
 # Initialize FastAPI and mount the GraphQL app
 app = FastAPI()
 
-# Redirect /graphql to /graphql/
-@app.get("/graphql")
-async def graphql_redirect():
-    return RedirectResponse(url="/graphql/")
-
 # Add CORS middleware to allow requests from localhost:3000
 origins = [
     "http://localhost:3000",
