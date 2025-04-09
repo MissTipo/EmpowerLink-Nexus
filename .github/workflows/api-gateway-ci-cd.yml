@@ -33,7 +33,7 @@ jobs:
 
       - name: Run Tests
         run: |
-          PYTHONPATH=. pytest --maxfail=1 --disable-warnings -q
+          python3 -m pytest
 
   build_and_deploy:
     name: Build, Push, and Deploy API Gateway
@@ -51,8 +51,8 @@ jobs:
 
       - name: Build and Push API Gateway Image with Docker Compose
         run: |
-          docker-compose build api-gateway
-          docker-compose push api-gateway
+          docker compose build api-gateway
+          docker compose push api-gateway
 
       - name: Install Kompose
         run: |
