@@ -76,12 +76,24 @@ jobs:
         with:
           version: 'v1.26.0'
 
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: empowerlink-nexus
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+
+      - name: Get GKE Credentials
+        run: |
+          gcloud container clusters get-credentials empowerlink-cluster --zone us-central1-a --project empowerlink-nexus
+
       - name: Configure Kubeconfig
         env:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         run: |
           mkdir -p $HOME/.kube
-          echo "$KUBE_CONFIG_DATA" | base64 --decode > $HOME/.kube/config
+          cat $HOME/.kube/config
+          # echo "$KUBE_CONFIG_DATA" | base64 --decode > $HOME/.kube/config
 
       - name: Deploy to Kubernetes
         run: |
