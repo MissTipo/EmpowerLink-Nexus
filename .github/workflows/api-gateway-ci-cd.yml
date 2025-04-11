@@ -111,19 +111,31 @@ jobs:
         run: |
           gcloud components install gke-gcloud-auth-plugin -q
 
-      - name: Delete existing api-gateway deployment (if any)
-        run: |
-          kubectl delete deployment,service -l app=api-gateway --ignore-not-found=true --grace-period=0 --force
-          kubectl delete service api-gateway-service --ignore-not-found=true
-          kubectl wait --for=delete deployment/api-gateway --timeout=60s || true
+      # - name: Delete existing api-gateway deployment (if any)
+      #   run: |
+      #     kubectl delete deployment,service -l app=api-gateway --ignore-not-found=true --grace-period=0 --force
+      #     kubectl delete service api-gateway-service --ignore-not-found=true
+      #     kubectl wait --for=delete deployment/api-gateway --timeout=60s || true
+      #
+      # - name: Delete api-gateway resources (deployment + services)
+      #   run: |
+      #     kubectl delete -R -f ../k8s/ --ignore-not-found=true
+      #     kubectl wait --for=delete deployment/api-gateway --timeout=60s || true
+      #     sleep 10  # Give the cluster time to clean up
 
-      - name: Delete api-gateway resources (deployment + services)
+      - name: Ensure full cleanup of api-gateway
         run: |
-          kubectl delete -R -f ../k8s/ --ignore-not-found=true
-          kubectl wait --for=delete deployment/api-gateway --timeout=60s || true
-          sleep 10  # Give the cluster time to clean up
+          kubectl delete deployment api-gateway --ignore-not-found=true --grace-period=0 --force
+          kubectl delete rs -l app=api-gateway --ignore-not-found=true
+          kubectl delete pods -l app=api-gateway --ignore-not-found=true
+          kubectl delete service api-gateway --ignore-not-found=true
+          kubectl delete service api-gateway-service --ignore-not-found=true
+
+          # Verify it's gone
+          echo "Remaining resources (if any):"
+          kubectl get all -l app=api-gateway || true
 
       - name: Deploy to Kubernetes
         run: |
-          kubectl replace -R -f ../k8s/
+          kubectl create -R -f ../k8s/
 
