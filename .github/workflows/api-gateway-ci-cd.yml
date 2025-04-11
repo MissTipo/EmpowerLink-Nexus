@@ -142,5 +142,6 @@ jobs:
 
       - name: Deploy to Kubernetes
         run: |
-          kubectl create -R -f ../k8s/
+          kubectl create -f ../k8s/api-gateway-deployment.yaml
+          kubectl create -f ../k8s/api-gateway-service.yaml
 
