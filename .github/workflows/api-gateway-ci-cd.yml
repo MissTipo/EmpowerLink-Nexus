@@ -125,5 +125,5 @@ jobs:
 
       - name: Deploy to Kubernetes
         run: |
-          kubectl create -R -f ../k8s/
+          kubectl replace -R -f ../k8s/
 
