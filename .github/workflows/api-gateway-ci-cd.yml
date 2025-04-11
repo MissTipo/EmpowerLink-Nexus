@@ -113,7 +113,8 @@ jobs:
 
       - name: Delete existing api-gateway deployment (if any)
         run: |
-          kubectl delete deployment api-gateway --ignore-not-found=true
+          kubectl delete deployment api-gateway --ignore-not-found=true --grace-period=0 --force
+          kubectl wait --for=delete deployment/api-gateway --timeout=60s
 
       - name: Deploy to Kubernetes
         run: |
