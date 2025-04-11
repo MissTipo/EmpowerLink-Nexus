@@ -110,7 +110,7 @@ jobs:
       - name: Install gke-gcloud-auth-plugin
         run: |
           LATEST_VERSION=$(curl -s https://api.github.com/repos/GoogleCloudPlatform/gke-gcloud-auth-plugin/releases/latest | jq -r .tag_name)
-          curl -LO https://github.com/GoogleCloudPlatform/gke-gcloud-auth-plugin/releases/download/$LATEST_VERSION/gke-gcloud-auth-plugin-linux-amd64
+          gcloud components install gke-gcloud-auth-plugin -q
           chmod +x gke-gcloud-auth-plugin-linux-amd64
           sudo mv gke-gcloud-auth-plugin-linux-amd64 /usr/local/bin/gke-gcloud-auth-plugin
 
