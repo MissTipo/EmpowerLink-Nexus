@@ -120,5 +120,8 @@ jobs:
       - name: Deploy to Kubernetes
         run: |
           kubectl delete -R -f ../k8s/ --ignore-not-found=true
-          kubectl apply -R -f ../k8s/
+          kubectl wait --for=delete deployment/api-gateway --timeout=60s || true
+          kubectl wait --for=delete service/api-gateway --timeout=60s || true
+          kubectl wait --for=delete service/api-gateway-service --timeout=60s || true
+          kubectl create -R -f ../k8s/
 
