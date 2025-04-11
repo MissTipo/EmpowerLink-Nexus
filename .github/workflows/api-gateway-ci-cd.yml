@@ -120,5 +120,5 @@ jobs:
       - name: Deploy to Kubernetes
         run: |
           kubectl delete -R -f ../k8s/ --ignore-not-found=true
-          kubectl create -R -f ../k8s/
+          kubectl apply -R -f ../k8s/
 
