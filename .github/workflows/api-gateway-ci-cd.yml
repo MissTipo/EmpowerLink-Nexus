@@ -135,6 +135,11 @@ jobs:
           echo "Remaining resources (if any):"
           kubectl get all -l app=api-gateway || true
 
+      - name: List k8s files for debugging
+        run: |
+          echo "Listing k8s files..."
+          ls -l ../k8s/
+
       - name: Deploy to Kubernetes
         run: |
           kubectl create -R -f ../k8s/
