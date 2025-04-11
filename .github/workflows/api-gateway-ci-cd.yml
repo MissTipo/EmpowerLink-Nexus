@@ -117,26 +117,13 @@ jobs:
           kubectl delete service api-gateway-service --ignore-not-found=true
           kubectl wait --for=delete deployment/api-gateway --timeout=60s || true
 
-      # - name: Delete api-gateway resources (deployment + services)
-      #   run: |
-      #     kubectl delete -R -f ../k8s/ --ignore-not-found=true
-      #     echo "Waiting for deletion to propagate..."
-      #     sleep 10  # Give the cluster time to clean up
-      #
-      # - name: Deploy to Kubernetes
-      #   run: |
-      #     kubectl apply -R -f ../k8s/
-
-      - name: Force delete api-gateway deployment
+      - name: Delete api-gateway resources (deployment + services)
         run: |
-          kubectl delete deployment api-gateway --ignore-not-found=true --grace-period=0 --force
-          kubectl delete service api-gateway --ignore-not-found=true
-          kubectl delete service api-gateway-service --ignore-not-found=true
+          kubectl delete -R -f ../k8s/ --ignore-not-found=true
           kubectl wait --for=delete deployment/api-gateway --timeout=60s || true
-          sleep 20
+          sleep 10  # Give the cluster time to clean up
 
-      - name: Deploy fresh api-gateway resources
+      - name: Deploy to Kubernetes
         run: |
-          kubectl create -R -f ../k8s/
-
+          kubectl apply -R -f ../k8s/
 
