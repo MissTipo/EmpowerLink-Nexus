@@ -11,7 +11,7 @@ router = APIRouter()
 @router.post("/", response_model=UserProfileResponse)
 def create_user_profile(profile: UserProfileCreate, db: Session = Depends(get_db)):
     # For now, a simple in-memory placeholder (later use SQLAlchemy session)
-    db_user = models.UserProfile(**profile.dict())
+    db_user = models.UserProfile(**profile.model_dump())
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -29,7 +29,7 @@ def update_user_profile(user_id: int, profile: UserProfileUpdate, db: Session = 
     db_user = db.query(models.UserProfile).filter(models.UserProfile.id == user_id).first()
     if not db_user:
         raise HTTPException(status_code=404, detail="User not found")
-    for key, value in profile.dict(exclude_unset=True).items():
+    for key, value in profile.model_dump(exclude_unset=True).items():
         setattr(db_user, key, value)
     db.commit()
     db.refresh(db_user)
