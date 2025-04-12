@@ -25,10 +25,15 @@ input UserProfileInput {
 
 type Query {
   getUserProfile(id: ID!): UserProfile
+  getUserProfileByName(name: String!): UserProfile
+  getUsersByLocation(location: String!): [UserProfile]
+  getUserProfileByPhoneNumber(phone_number: String!): UserProfile
+  allUserProfiles: [UserProfile]
 }
 
 type Mutation {
   createUserProfile(input: UserProfileInput!): UserProfile
   updateUserProfile(id: ID!, input: UserProfileInput!): UserProfile
+   updateUserProfileByPhoneNumber(phone_number: String!, input: UserProfileInput!): UserProfile
 }
 
