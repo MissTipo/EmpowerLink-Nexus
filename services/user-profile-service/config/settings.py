@@ -1,19 +1,11 @@
-# user-profile-service/config/settings.py
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+# config/settings.py
 
-DATABASE_URL = "sqlite:///./user_profile.db"
+import os
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
-engine = create_engine(
-    DATABASE_URL, connect_args={"check_same_thread": False}  # Needed for SQLite
-)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+class Settings(BaseSettings):
+    DATABASE_URL: str = "postgresql://user:password@localhost/user_profile_db"
+    model_config = SettingsConfigDict(env_file=".env")
 
-# Dependency to be used with FastAPI
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+settings = Settings()
 
