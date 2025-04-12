@@ -14,6 +14,8 @@ from app.graphql.resolvers import (
     resolve_createUserProfile,
     resolve_updateUserProfile,
 )
+from app.database import Base, engine
+from app.models import UserProfile
 
 # Initialize FastAPI app
 app = FastAPI(title="User Profile Service")
@@ -47,6 +49,8 @@ schema = make_executable_schema(type_defs, query, mutation)
 
 # Mount GraphQL endpoint at /graphql
 app.mount("/graphql", GraphQL(schema, debug=True))
+
+Base.metadata.create_all(bind=engine)
 
 if __name__ == "__main__":
     import uvicorn
