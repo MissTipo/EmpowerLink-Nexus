@@ -1,18 +1,18 @@
-# user-profile-service/app/database.py
+# app/database.py
+
 from sqlalchemy import create_engine
+from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
-from config.settings import DATABASE_URL
+from config.settings import settings
 
-# Create the SQLAlchemy engine
-engine = create_engine(
-    DATABASE_URL, 
-    connect_args={"check_same_thread": False}  # Only needed for SQLite
-)
+DATABASE_URL = settings.DATABASE_URL
 
-# Create a configured "Session" class
+engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# Dependency for getting a database session
+Base = declarative_base()
+
+# Dependency for FastAPI routes/resolvers
 def get_db():
     db = SessionLocal()
     try:
