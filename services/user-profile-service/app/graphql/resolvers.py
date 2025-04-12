@@ -1,32 +1,101 @@
 # user-profile-service/app/graphql/resolvers.py
 
-# Dummy in-memory storage for demonstration purposes
-# Later, you can integrate with the models and actual database logic.
-DUMMY_USER = {
-    "id": "1",
-    "phone_number": "1234567890",
-    "name": "John Doe",
-    "gender": "Male",
-    "age": 30,
-    "location": "Unknown",
-    "created_at": "2025-01-01T00:00:00Z"
-}
+from app.models import UserProfile
+from app.database import SessionLocal
+from app.schemas import UserProfileResponse
 
 def resolve_getUserProfile(_, info, id):
-    # Placeholder: always return the dummy user for id "1"
-    if id == "1":
-        return DUMMY_USER
-    return None
+    db = SessionLocal()
+    try:
+        user = db.query(UserProfile).filter(UserProfile.id == int(id)).first()
+        if user:
+            return UserProfileResponse.model_validate(user).model_dump()
+        return None
+    finally:
+        db.close()
 
 def resolve_createUserProfile(_, info, input):
-    # Here, you would normally store the new user and return it
-    created_user = {"id": "2", **input, "created_at": "2025-01-02T00:00:00Z"}
-    return created_user
+    db = SessionLocal()
+    try:
+        new_user = UserProfile(**input)
+        db.add(new_user)
+        db.commit()
+        db.refresh(new_user)
+        return UserProfileResponse.model_validate(new_user).model_dump()
+    finally:
+        db.close()
 
 def resolve_updateUserProfile(_, info, id, input):
-    # Placeholder: update the dummy user if id matches
-    if id == "1":
-        updated_user = {**DUMMY_USER, **input}
-        return updated_user
-    return None
+    db = SessionLocal()
+    try:
+        user = db.query(UserProfile).filter(UserProfile.id == int(id)).first()
+        if not user:
+            return None
+        for key, value in input.items():
+            setattr(user, key, value)
+        db.commit()
+        db.refresh(user)
+        return UserProfileResponse.model_validate(user).model_dump()
+    finally:
+        db.close()
+
+def resolve_getUserProfileByPhoneNumber(_, info, phone_number):
+    db = SessionLocal()
+    try:
+        user = db.query(UserProfile).filter(UserProfile.phone_number == phone_number).first()
+        if user:
+            return UserProfileResponse.model_validate(user).model_dump()
+        return None
+    finally:
+        db.close()
+
+def resolve_getUserProfileByName(_, info, name):
+    db = SessionLocal()
+    try:
+        user = db.query(UserProfile).filter(UserProfile.name == name).first()
+        if user:
+            return UserProfileResponse.model_validate(user).model_dump()
+        return None
+    finally:
+        db.close()
+
+def resolve_updateUserProfileByPhoneNumber(_, info, phone_number, input):
+    db = SessionLocal()
+    try:
+        user = db.query(UserProfile).filter(UserProfile.phone_number == phone_number).first()
+        if not user:
+            return None
+        for key, value in input.items():
+            setattr(user, key, value)
+        db.commit()
+        db.refresh(user)
+        return UserProfileResponse.model_validate(user).model_dump()
+    finally:
+        db.close()
+
+def resolve_getUsersByLocation(_, info, location):
+    db = SessionLocal()
+    try:
+        users = db.query(UserProfile).filter(UserProfile.location == location).all()
+        return [UserProfileResponse.model_validate(u).model_dump() for u in users]
+    finally:
+        db.close()
+
+# def resolve_allUserProfiles(_, info):
+#     db = SessionLocal()
+#     try:
+#         users = db.query(UserProfile).all()
+#         return [UserProfileResponse.model_validate(u).model_dump() for u in users]
+#     finally:
+#         db.close()
+#
+
+def resolve_allUserProfiles(_, info):
+    db = SessionLocal()
+    try:
+        users = db.query(UserProfile).all()
+        print("Fetched users from DB:", users)  # Add this
+        return [UserProfileResponse.model_validate(u).model_dump() for u in users]
+    finally:
+        db.close()
 
