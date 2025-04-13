@@ -1,0 +1,46 @@
+# app/graphql/schema.graphql
+
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type Organization {
+  id: ID!
+  name: String!
+  email: String!
+  role: String!
+  created_at: String!
+}
+
+input OrganizationInput {
+  name: String!
+  email: String!
+  password: String!
+  role: String!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type AuthPayload {
+  access_token: String!
+  token_type: String!
+}
+
+type Query {
+  getOrganizationByEmail(email: String!): Organization
+}
+
+type Mutation {
+  registerOrganization(input: OrganizationInput!): Organization
+  loginOrganization(input: LoginInput!): AuthPayload
+  verifyOrganizationToken(token: String!): TokenInfo
+}
+
+type TokenInfo {
+  email: String
+}
+
