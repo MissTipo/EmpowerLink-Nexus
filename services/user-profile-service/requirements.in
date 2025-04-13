@@ -8,6 +8,7 @@ httpx
 idna
 psycopg2-binary
 pydantic
+pydantic-settings
 pytest
 python-dateutil
 python-decouple
