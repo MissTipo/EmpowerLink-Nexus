@@ -81,21 +81,34 @@ def resolve_getUsersByLocation(_, info, location):
     finally:
         db.close()
 
-# def resolve_allUserProfiles(_, info):
-#     db = SessionLocal()
-#     try:
-#         users = db.query(UserProfile).all()
-#         return [UserProfileResponse.model_validate(u).model_dump() for u in users]
-#     finally:
-#         db.close()
-#
-
 def resolve_allUserProfiles(_, info):
     db = SessionLocal()
     try:
         users = db.query(UserProfile).all()
-        print("Fetched users from DB:", users)  # Add this
         return [UserProfileResponse.model_validate(u).model_dump() for u in users]
     finally:
         db.close()
 
+def resolve_deleteUserProfile(_, info, id):
+    db = SessionLocal()
+    try:
+        user = db.query(UserProfile).filter(UserProfile.id == int(id)).first()
+        if not user:
+            return False
+        db.delete(user)
+        db.commit()
+        return True
+    finally:
+        db.close()
+
+def resolve_deleteUserProfileByPhoneNumber(_, info, phone_number):
+    db = SessionLocal()
+    try:
+        user = db.query(UserProfile).filter(UserProfile.phone_number == phone_number).first()
+        if not user:
+            return False
+        db.delete(user)
+        db.commit()
+        return True
+    finally:
+        db.close()
