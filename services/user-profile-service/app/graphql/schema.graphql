@@ -34,6 +34,8 @@ type Query {
 type Mutation {
   createUserProfile(input: UserProfileInput!): UserProfile
   updateUserProfile(id: ID!, input: UserProfileInput!): UserProfile
-   updateUserProfileByPhoneNumber(phone_number: String!, input: UserProfileInput!): UserProfile
+  updateUserProfileByPhoneNumber(phone_number: String!, input: UserProfileInput!): UserProfile
+  deleteUserProfile(id: ID!): Boolean
+  deleteUserProfileByPhoneNumber(phone_number: String!): Boolean
 }
 
