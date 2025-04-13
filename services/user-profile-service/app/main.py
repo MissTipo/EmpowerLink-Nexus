@@ -13,6 +13,12 @@ from app.graphql.resolvers import (
     resolve_getUserProfile,
     resolve_createUserProfile,
     resolve_updateUserProfile,
+    resolve_deleteUserProfile,
+    resolve_deleteUserProfileByPhoneNumber,
+    resolve_allUserProfiles,
+    resolve_getUserProfileByPhoneNumber,
+    resolve_getUserProfileByName,
+    resolve_getUsersByLocation,
 )
 from app.database import Base, engine
 from app.models import UserProfile
@@ -40,6 +46,12 @@ mutation = MutationType()
 query.set_field("getUserProfile", resolve_getUserProfile)
 mutation.set_field("createUserProfile", resolve_createUserProfile)
 mutation.set_field("updateUserProfile", resolve_updateUserProfile)
+mutation.set_field("deleteUserProfile", resolve_deleteUserProfile)
+mutation.set_field("deleteUserProfileByPhoneNumber", resolve_deleteUserProfileByPhoneNumber)
+query.set_field("getUserProfileByPhoneNumber", resolve_getUserProfileByPhoneNumber)
+query.set_field("getUserProfileByName", resolve_getUserProfileByName)
+query.set_field("getUsersByLocation", resolve_getUsersByLocation)
+query.set_field("allUserProfiles", resolve_allUserProfiles)
 
 # Load GraphQL schema from file
 schema_path = os.path.join(os.path.dirname(__file__), "graphql")
