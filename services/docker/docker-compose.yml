@@ -8,3 +8,10 @@ services:
     ports:
       - "8000:8000"
 
+  user-profile:
+    build:
+      context: ../user-profile-service
+      dockerfile: Dockerfile
+    image: misstipo/user-profile:latest
+    ports:
+      - "8001:8001"
