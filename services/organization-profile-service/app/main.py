@@ -1,21 +1,26 @@
+# app/main.py
 import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from ariadne import load_schema_from_path, make_executable_schema, QueryType, MutationType
 from ariadne.asgi import GraphQL
 
-from app.routes import router as org_router
+# Optional: import REST routes for auth if needed
+from app.routes import router as auth_router
+
+# Import GraphQL resolvers
 from app.graphql.resolvers import (
-    resolve_registerOrganization,
-    resolve_loginOrganization,
-    resolve_verifyOrganizationToken,
-    resolve_getOrganizationByEmail,
+    resolve_signupOrganization,
+    resolve_signinOrganization,
+    resolve_updateOrganizationProfile,
+    resolve_getOrganization,
+    resolve_listOrganizations,
 )
 from app.database import Base, engine
 
-app = FastAPI(title="Organization Auth Service")
+app = FastAPI(title="Organization Profile Service")
 
-# Add CORS middleware (allow all origins for development)
+# CORS configuration (adjust origins as necessary)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -24,28 +29,27 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Mount REST routes (if you plan on using them)
-app.include_router(org_router, prefix="/api/org")
+# Include REST endpoints if needed (for auth, etc.)
+app.include_router(auth_router, prefix="/auth", tags=["auth"])
 
-# Create GraphQL Query and Mutation types
+# Create GraphQL type definitions
 query = QueryType()
 mutation = MutationType()
 
-# Map GraphQL resolvers to their corresponding query/mutation fields
-query.set_field("getOrganizationByEmail", resolve_getOrganizationByEmail)
-mutation.set_field("registerOrganization", resolve_registerOrganization)
-mutation.set_field("loginOrganization", resolve_loginOrganization)
-mutation.set_field("verifyOrganizationToken", resolve_verifyOrganizationToken)
+query.set_field("getOrganization", resolve_getOrganization)
+query.set_field("listOrganizations", resolve_listOrganizations)
+mutation.set_field("signupOrganization", resolve_signupOrganization)
+mutation.set_field("signinOrganization", resolve_signinOrganization)
+mutation.set_field("updateOrganizationProfile", resolve_updateOrganizationProfile)
 
-# Load the GraphQL schema from the 'graphql' folder
 schema_path = os.path.join(os.path.dirname(__file__), "graphql")
 type_defs = load_schema_from_path(schema_path)
+
 schema = make_executable_schema(type_defs, query, mutation)
 
-# Mount GraphQL endpoint at /graphql
+# Mount GraphQL endpoint
 app.mount("/graphql", GraphQL(schema, debug=True))
-
-# Create all tables (useful for development; in production, use migrations)
+Base.metadata.drop_all(bind=engine)
 Base.metadata.create_all(bind=engine)
 
 if __name__ == "__main__":
