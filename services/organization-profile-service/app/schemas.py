@@ -1,30 +1,37 @@
 # app/schemas.py
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, EmailStr
 from typing import Optional
 from datetime import datetime
 
 class OrganizationBase(BaseModel):
     name: str
-    email: str
-    role: str
+    email: EmailStr
+    phone: Optional[str] = None
+    location: Optional[str] = None
+    role: Optional[str] = "Organization"  # Default role
 
 class OrganizationCreate(OrganizationBase):
-    password: str
+    password: str  # Plain text password to be hashed
 
-class OrganizationLogin(BaseModel):
-    email: str
-    password: str
+class OrganizationUpdate(BaseModel):
+    name: Optional[str] = None
+    phone: Optional[str] = None
+    location: Optional[str] = None
 
 class OrganizationResponse(OrganizationBase):
     id: int
     created_at: datetime
 
-    model_config = ConfigDict(from_attributes=True)
+    class Config:
+        orm_mode = True
 
-class AuthPayload(BaseModel):
+# For authentication responses
+class Token(BaseModel):
     access_token: str
-    token_type: str = "bearer"
+    token_type: str
 
-class TokenInfo(BaseModel):
-    email: Optional[str]
+class TokenData(BaseModel):
+    email: Optional[str] = None
+    role: Optional[str] = None
+    org_id: Optional[int] = None
 
