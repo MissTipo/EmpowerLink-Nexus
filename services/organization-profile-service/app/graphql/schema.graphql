@@ -9,6 +9,8 @@ type Organization {
   id: ID!
   name: String!
   email: String!
+  phone: String
+  location: String
   role: String!
   created_at: String!
 }
@@ -16,31 +18,31 @@ type Organization {
 input OrganizationInput {
   name: String!
   email: String!
-  password: String!
-  role: String!
-}
-
-input LoginInput {
-  email: String!
+  phone: String
+  location: String
+  role: String
   password: String!
 }
 
-type AuthPayload {
+input OrganizationUpdateInput {
+  name: String
+  phone: String
+  location: String
+}
+
+type Token {
   access_token: String!
   token_type: String!
 }
 
 type Query {
-  getOrganizationByEmail(email: String!): Organization
+  getOrganization(id: ID!): Organization
+  listOrganizations(location: String, role: String): [Organization]
 }
 
 type Mutation {
-  registerOrganization(input: OrganizationInput!): Organization
-  loginOrganization(input: LoginInput!): AuthPayload
-  verifyOrganizationToken(token: String!): TokenInfo
-}
-
-type TokenInfo {
-  email: String
+  signupOrganization(input: OrganizationInput!): Organization
+  signinOrganization(email: String!, password: String!): Token
+  updateOrganizationProfile(id: ID!, input: OrganizationUpdateInput!): Organization
 }
 
