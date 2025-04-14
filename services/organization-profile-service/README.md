@@ -30,6 +30,7 @@ The Organization Auth Service is a microservice designed to handle the authentic
 - **Environment Configuration:** `.env` file with Pydantic BaseSettings
 
 ## Directory Structure
+```plaintext
 
 organization-auth-service/
 ├── app/
@@ -50,7 +51,7 @@ organization-auth-service/
 ├── docker-compose.yml       # (optional) Docker Compose configuration for local development
 ├── .env                     # Environment variables (DATABASE_URL, SECRET_KEY, etc.)
 └── README.md                # This file
-
+```
 
 ## Getting Started
 
