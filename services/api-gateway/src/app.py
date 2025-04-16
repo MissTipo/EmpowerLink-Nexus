@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 
 # Import resolvers from the resolvers directory
-from .resolvers.query_resolver import (
+from resolvers.query_resolver import (
     resolve_getUserProfile,
     resolve_getMatchingResources,
     resolve_getAvailableResources,
@@ -15,11 +15,11 @@ from .resolvers.query_resolver import (
     resolve_getReports,
     resolve_getUSSDMenu,
 )
-from .resolvers.feedback_resolver import resolve_submitReport, resolve_submitFeedback
-from .resolvers.inclusivity_resolver import resolve_updateInclusivityIndex
-from .resolvers.resource_resolver import resolve_requestResourceMatching, resolve_addResource
-from .resolvers.geospatial_resolver import resolve_addResourceLocation
-from .resolvers.telephony_resolver import resolve_logIVRInteraction
+from resolvers.feedback_resolver import resolve_submitReport, resolve_submitFeedback
+from resolvers.inclusivity_resolver import resolve_updateInclusivityIndex
+from resolvers.resource_resolver import resolve_requestResourceMatching, resolve_addResource
+from resolvers.geospatial_resolver import resolve_addResourceLocation
+from resolvers.telephony_resolver import resolve_logIVRInteraction
 
 # Create the Query and Mutation types
 query = QueryType()
