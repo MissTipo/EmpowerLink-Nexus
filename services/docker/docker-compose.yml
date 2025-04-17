@@ -12,8 +12,6 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
-version: "3"
-services:
   api-gateway:
     build:
       context: ../api-gateway
