@@ -40,5 +40,13 @@ services:
     ports:
       - "8002:8002"
 
+  telephony-integration:
+    build:
+      context: ../telephony-integration-service
+      dockerfile: Dockerfile
+    image: misstipo/telephony-integration:latest
+    ports:
+      - "8003:8003"
+
 volumes:
   pgdata:
