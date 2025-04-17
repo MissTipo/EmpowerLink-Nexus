@@ -69,6 +69,7 @@ env/
 gateway/
 profile/
 organization/
+telephony/
 
 # VS Code
 .vscode/
