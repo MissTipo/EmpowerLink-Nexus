@@ -4,3 +4,4 @@ Create a Kubernetes Secret in the cluster
 Add dependency for user-profile-service
 Define dependency for user-profile-service
 Remove redefinition of mapping keys versionand services
+declare the pgdata volume
