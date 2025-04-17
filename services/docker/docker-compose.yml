@@ -39,3 +39,6 @@ services:
     image: misstipo/organization-profile:latest
     ports:
       - "8002:8002"
+
+volumes:
+  pgdata:
