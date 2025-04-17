@@ -1,5 +1,19 @@
 version: "3"
 services:
+  postgres:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: empower
+      POSTGRES_PASSWORD: empowerpass
+      POSTGRES_DB: empowerdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+version: "3"
+services:
   api-gateway:
     build:
       context: ../api-gateway
