@@ -1,0 +1,15 @@
+# telephony-integration-service/app/graphql/schema.graphql
+
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type Query {
+  dummy: String
+}
+
+type Mutation {
+  dummyMutation: String
+}
+
