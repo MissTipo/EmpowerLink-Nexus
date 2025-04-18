@@ -23,6 +23,7 @@ typing_extensions
 uvicorn
 uvloop
 requests
+respx
 watchfiles
 websockets
 
