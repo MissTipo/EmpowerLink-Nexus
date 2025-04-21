@@ -61,6 +61,7 @@ schema = make_executable_schema(type_defs, query, mutation)
 
 # Mount GraphQL endpoint at /graphql
 app.mount("/graphql", GraphQL(schema, debug=True))
+app.mount("/graphql/", GraphQL(schema, debug=True))
 
 Base.metadata.create_all(bind=engine)
 
