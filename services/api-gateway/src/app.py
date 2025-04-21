@@ -92,11 +92,12 @@ async def graphql_proxy(request: Request):
         )
 
     # Proxy the entire GraphQL payload
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(follow_redirects=True) as client:
         resp = await client.post(url, json=body)
         try:
             data = resp.json()
-        except ValueError:
+        except Exception:
             data = {"errors":[{"message":"Invalid response from downstream"}]}
+            return JSONResponse(content=data, status_code=502)
     return JSONResponse(content=data, status_code=resp.status_code)
 
