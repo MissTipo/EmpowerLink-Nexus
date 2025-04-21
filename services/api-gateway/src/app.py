@@ -12,14 +12,14 @@ import httpx
 app = FastAPI(title="EmpowerLink Nexus API Gateway")
 
 # CORS settings: allow from all origins or restrict as needed
-origins = ["*"]
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# origins = ["*"]
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=origins,
+#     allow_credentials=True,
+#     allow_methods=["*"],
+#     allow_headers=["*"],
+# )
 
 # Map GraphQL operation names to service endpoints
 SERVICE_MAP = {
