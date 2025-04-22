@@ -70,6 +70,7 @@ gateway/
 profile/
 organization/
 telephony/
+resource/
 
 # VS Code
 .vscode/
