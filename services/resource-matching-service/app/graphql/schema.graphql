@@ -1,0 +1,63 @@
+scalar JSON
+
+enum ServiceType {
+  HEALTH
+  LEGAL
+  SOCIAL
+}
+
+# Input type used for user location in queries
+input GeoPointInput {
+  latitude: Float!
+  longitude: Float!
+}
+
+# Output type used in responses
+type GeoPoint {
+  latitude: Float!
+  longitude: Float!
+}
+
+type Resource {
+  resource_id: ID!
+  service_type: ServiceType!
+  latitude: Float!
+  longitude: Float!
+  cost_level: Int!
+  languages_supported: [String!]!
+  capacity: Int!
+  tags: JSON!
+}
+
+type ResourceMatch {
+  resource: Resource!
+  score: Float!
+}
+
+type Query {
+  getMatchingResources(
+    userId: ID!
+    serviceType: ServiceType!
+    location: GeoPointInput!
+    age: Int
+    gender: String
+    languages: [String!]
+    costLevel: Int
+    maxDistanceKm: Float
+    limit: Int = 5
+  ): [ResourceMatch!]!
+}
+
+input ResourceInput {
+  latitude: Float!
+  longitude: Float!
+  cost_level: Int!
+  languages_supported: [String!]!
+  capacity: Int!
+  tags: JSON!
+}
+
+type Mutation {
+  createResource(organizationId: ID!, input: ResourceInput!): Resource!
+}
+
