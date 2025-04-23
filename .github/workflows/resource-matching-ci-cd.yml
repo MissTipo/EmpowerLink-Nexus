@@ -79,6 +79,16 @@ jobs:
           path: services/resource-matching-service/ai/artifacts
           key: ${{ runner.os }}-model-${{ github.sha }}
 
+      - name: List AI directory contents
+        run: |
+          ls -lh ai/
+          ls -lh ai/artifacts/
+
+      - name: Ensure model exists
+        run: |
+          test -f ai/artifacts/model.pkl
+
+
       - name: Upload model artifact
         uses: actions/upload-artifact@v4
         with:
