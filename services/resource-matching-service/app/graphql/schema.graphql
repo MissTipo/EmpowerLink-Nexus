@@ -46,6 +46,25 @@ type Query {
     maxDistanceKm: Float
     limit: Int = 5
   ): [ResourceMatch!]!
+
+  # New: list all (or filtered) resources
+  getAvailableResources(
+    serviceType: ServiceType
+    limit: Int = 50
+  ): [Resource!]!
+
+  # New: alias for triggering a match request  
+  requestResourceMatching(
+    userId: ID!
+    serviceType: ServiceType!
+    location: GeoPointInput!
+    age: Int
+    gender: String
+    languages: [String!]
+    costLevel: Int
+    maxDistanceKm: Float
+    limit: Int = 5
+  ): [ResourceMatch!]!
 }
 
 input ResourceInput {
