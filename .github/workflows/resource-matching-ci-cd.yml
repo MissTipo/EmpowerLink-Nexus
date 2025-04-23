@@ -69,10 +69,9 @@ jobs:
 
       - name: Train Scikit-learn Model
         run: |
-          python -m ai.matching_model \
-          python -m ai.train_model
+          python -m ai.build_model --seed\
           mkdir -p ai/artifacts
-          mv ai/matching.pkl ai/artifacts/model.pkl
+          cp ai/knn_model.pkl ai/artifacts/model.pkl
 
       - name: Cache trained model artifact
         uses: actions/cache@v3
