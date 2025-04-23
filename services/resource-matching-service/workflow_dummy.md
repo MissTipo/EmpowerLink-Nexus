@@ -11,4 +11,3 @@ Fix model artifact paths in build process
 
 - Updated build_model.py to save model artifacts in ai/artifacts/
 - Adjusted GitHub Actions workflow to correctly upload and download model artifacts from ai/artifacts/
-
