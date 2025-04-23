@@ -48,5 +48,17 @@ services:
     ports:
       - "8003:8003"
 
+  resource-matching-service:
+    build:
+      context: ../resource-matching-service
+      dockerfile: Dockerfile
+    image: misstipo/resource-matching-service:latest
+    ports:
+      - "8004:8004"
+    depends_on:
+      - empowerdb
+    environment:
+      - DATABASE_URL=postgresql://empower:empowerpass@empowerdb:5432/empowerdb
+
 volumes:
   pgdata:
