@@ -12,4 +12,9 @@ Fix model artifact paths in build process
 - Updated build_model.py to save model artifacts in ai/artifacts/
 - Adjusted GitHub Actions workflow to correctly upload and download model artifacts from ai/artifacts/
 
+chore(ci): install and enable GKE auth plugin for kubectl
+
+- Install `google-cloud-cli-gke-gcloud-auth-plugin` via apt-get
+- Enable GKE auth plugin in gcloud config
+- Ensures `kubectl` can authenticate against GKE clusters
 
