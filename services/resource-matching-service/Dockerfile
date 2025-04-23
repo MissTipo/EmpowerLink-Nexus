@@ -14,7 +14,7 @@ RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
 # Copy AI code and train
 COPY ai/ ./ai/
-RUN python ai/matching_model.py  \
+RUN python -m ai.matching_model  \
     && mv models/trained_model.pkl artifacts/
 
 # Stage 2: Runtime image
