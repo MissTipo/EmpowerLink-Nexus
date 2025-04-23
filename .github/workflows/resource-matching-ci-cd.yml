@@ -39,7 +39,7 @@ jobs:
 
       - name: Run pytest
         run: |
-          pytest --maxfail=1 --disable-warnings -q
+          python3 -m pytest
 
   train_and_package:
     name: 🏋️ Train Model & Package Artifact
