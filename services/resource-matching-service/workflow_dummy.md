@@ -7,4 +7,8 @@ artifact is uploaded correctly for the build_and_deploy job.
 fix(ci): update training step to run train_model and correctly move model artifact
 fix(ci): correct training step to use ai/build_model.py and generate model artifact
 
+Fix model artifact paths in build process
+
+- Updated build_model.py to save model artifacts in ai/artifacts/
+- Adjusted GitHub Actions workflow to correctly upload and download model artifacts from ai/artifacts/
 
