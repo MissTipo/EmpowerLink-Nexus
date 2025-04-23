@@ -69,7 +69,7 @@ jobs:
 
       - name: Train Scikit-learn Model
         run: |
-          python -m ai.build_model --seed \
+          python -m ai.build_model --seed
           mkdir -p ai/artifacts
           cp ai/knn_model.pkl ai/artifacts/model.pkl
 
