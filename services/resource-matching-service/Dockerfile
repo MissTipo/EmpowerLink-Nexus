@@ -13,6 +13,7 @@ COPY requirements.txt .
 RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
 # Copy AI code and train
+COPY config/ ./config/
 COPY ai/ ./ai/
 RUN python -m ai.matching_model  \
     && mv models/trained_model.pkl artifacts/
