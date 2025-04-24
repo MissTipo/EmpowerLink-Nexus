@@ -62,9 +62,9 @@ services:
 
   geo-mapping-service:
     build:
-      context: ../geo-mapping-service
+      context: ../geospatial-mapping-service
       dockerfile: Dockerfile
-    image: misstipo/geo-mapping-service:latest
+    image: misstipo/geospatial-mapping-service:latest
     ports:
       - "8005:8005"
     depends_on:
