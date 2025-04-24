@@ -60,5 +60,17 @@ services:
     environment:
       - DATABASE_URL=postgresql://empower:empowerpass@empowerdb:5432/empowerdb
 
+  geo-mapping-service:
+    build:
+      context: ../geo-mapping-service
+      dockerfile: Dockerfile
+    image: misstipo/geo-mapping-service:latest
+    ports:
+      - "8005:8005"
+    depends_on:
+      - empowerdb
+    environment:
+      - DATABASE_URL=postgresql://empower:empowerpass@empowerdb:5432/empowerdb
+
 volumes:
   pgdata:
