@@ -1,0 +1,19 @@
+scalar JSON
+
+enum ServiceType {
+  HEALTH
+  LEGAL
+  SOCIAL
+}
+
+type ResourceLocation {
+  resource_id: ID!
+  service_type: ServiceType!
+  location: JSON!  # GeoJSON Point
+}
+
+type Query {
+  allResourceLocations: JSON!              # GeoJSON FeatureCollection
+  serviceDeserts(radiusKm: Float!): JSON!  # GeoJSON FeatureCollection
+}
+
