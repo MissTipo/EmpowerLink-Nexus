@@ -71,6 +71,7 @@ profile/
 organization/
 telephony/
 resource/
+geo/
 
 # VS Code
 .vscode/
