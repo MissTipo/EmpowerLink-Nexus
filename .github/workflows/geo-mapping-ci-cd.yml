@@ -115,4 +115,34 @@ jobs:
           gcloud container clusters get-credentials empowerlink-cluster --zone us-central1-a --project empowerlink-nexus
 
       - name: Configure Kubeconfig
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        run: |
+          mkdir -p $HOME/.kube
+          cat $HOME/.kube/config
+
+      - name: Install gke-gcloud-auth-plugin
+        run: |
+          gcloud components install gke-gcloud-auth-plugin -q
+
+      - name: Ensure full cleanup of geo-matching
+        run: |
+          kubectl delete deployment geo-matching-service --ignore-not-found=true --grace-period=0 --force
+          kubectl delete rs -l app=geo-matching-service --ignore-not-found=true
+          kubectl delete pods -l app=geo-matching-service --ignore-not-found=true
+          kubectl delete service geo-matching-service --ignore-not-found=true
+
+          # Verify it's gone
+          echo "Remaining resources (if any):"
+          kubectl get all -l app=geo-matching-service || true
+
+      - name: List k8s files for debugging
+        run: |
+          echo "Listing k8s files..."
+          ls -l ../k8s/
+
+      - name: Deploy to Kubernetes
+        run: |
+          kubectl create -f ../k8s/geo-matching-service-deployment.yaml
+          kubectl create -f ../k8s/geo-matching-service-service.yaml
 
