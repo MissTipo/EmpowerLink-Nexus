@@ -72,5 +72,36 @@ services:
     environment:
       - DATABASE_URL=postgresql://empower:empowerpass@empowerdb:5432/empowerdb
 
+  inclusivity-index-service:
+    build:
+      context: ../inclusivity-index-service
+      dockerfile: Dockerfile
+    image: misstipo/inclusivity-index:latest
+    ports:
+      - "8006:8006"
+    depends_on:
+      - empowerdb
+      - redis
+    environment:
+      - DATABASE_URL=postgresql://empower:empowerpass@empowerdb:5432/empowerdb
+      - CELERY_BROKER_URL=redis://redis:6379/0
+
+  inclusivity-worker:
+    build:
+      context: ../inclusivity-index-service
+      dockerfile: Dockerfile.worker  # or use the same Dockerfile if API & worker are in one image
+    image: misstipo/inclusivity-worker:latest
+    depends_on:
+      - empowerdb
+      - redis
+    environment:
+      - DATABASE_URL=postgresql://empower:empowerpass@empowerdb:5432/empowerdb
+      - CELERY_BROKER_URL=redis://redis:6379/0
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+
 volumes:
   pgdata:
