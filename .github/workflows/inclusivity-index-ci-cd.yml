@@ -158,8 +158,8 @@ jobs:
 
       - name: Deploy to Kubernetes
         run: |
-          kubectl create -f ../k8s/inclusivity-index-deployment.yaml
-          kubectl create -f ../k8s/inclusivity-index-service.yaml
+          kubectl create -f ../k8s/inclusivity-index-service-deployment.yaml
+          kubectl create -f ../k8s/inclusivity-index-service-service.yaml
 
       - name: Deploy Inclusivity Worker to Kubernetes
         run: |
