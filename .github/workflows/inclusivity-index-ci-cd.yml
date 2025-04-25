@@ -73,8 +73,8 @@ jobs:
 
       - name: Build and Push Inclusivity Index Image with Docker Compose
         run: |
-          docker compose build inclusivity-index
-          docker compose push inclusivity-index
+          docker compose build inclusivity-index-service
+          docker compose push inclusivity-index-service
 
       - name: Build and Push Inclusivity Worker Image with Docker Compose
         run: |
