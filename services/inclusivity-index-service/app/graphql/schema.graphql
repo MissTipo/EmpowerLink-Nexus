@@ -1,0 +1,17 @@
+type InclusivityMetric {
+    id: Int!
+    category: String!
+    value: Float!
+    timestamp: String!
+    regionId: Int!
+}
+
+type InclusivityIndex {
+    value: Float!
+}
+
+type Query {
+    getMetrics(regionId: Int!): [InclusivityMetric!]!
+    computeInclusivityIndex(regionId: Int!): InclusivityIndex!
+}
+
