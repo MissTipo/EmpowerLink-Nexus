@@ -1,0 +1,61 @@
+/* src/components/Shared/Header.css */
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f6fff9;
+  padding: var(--space-md);
+  color: var(--color-on-primary);           /* ensure good contrast */
+}
+
+.header__brand {
+  display: flex;
+  align-items: center;
+}
+
+.header__logo {
+  width: 40px;
+  height: 40px;
+  margin-right: var(--space-sm);
+}
+
+.header__title {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.header__nav {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.header__nav a {
+  color: var(--color-on-primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.header__nav a:hover {
+  color: var(--color-accent);
+}
+
+.header__menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--color-on-primary);
+  font-size: 1.5rem;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .header__nav {
+    display: none;
+  }
+
+  .header__menu-btn {
+    display: block;
+  }
+}
+
