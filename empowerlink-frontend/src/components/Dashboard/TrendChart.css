@@ -1,0 +1,8 @@
+.trend-chart {
+  flex: 2;
+  background-color: var(--color-surface);
+  padding: var(--space-md);
+  border-radius: 8px;
+  min-width: 300px;
+}
+

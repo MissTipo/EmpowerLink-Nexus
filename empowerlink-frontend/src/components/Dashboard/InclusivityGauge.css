@@ -1,0 +1,42 @@
+.gauge-card {
+  position: relative;
+  width: 250px;
+  height: 180px;
+  background-color: #f6fff9; /* minty-white background */
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  flex: 1 1 30%; /* flex-grow, flex-shrink, flex-basis */
+  min-width: 280px;
+  max-width: 32%;
+  min-height: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.gauge-value {
+  position: absolute;
+  top: 60px;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+}
+
+/* .gauge-label { */
+/*   margin-top: 1.5rem; */
+/*   font-size: 1rem; */
+/*   color: #555; */
+/* } */
+
+.gauge-label {
+  position: absolute;
+  top: 2rem;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #333;
+  text-align: center;
+}
+

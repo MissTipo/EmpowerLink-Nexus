@@ -1,0 +1,21 @@
+.map-chart {
+  background-color: var(--color-surface);
+  padding: var(--space-md);
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  color: var(--color-on-surface);
+}
+
+.map-title {
+  margin-bottom: var(--space-md);
+  font-size: 1.25rem;
+  text-align: center;
+  color: var(--color-accent);
+}
+
+.map-container {
+  height: 300px;
+  width: 105%;
+  border-radius: 8px;
+}
+

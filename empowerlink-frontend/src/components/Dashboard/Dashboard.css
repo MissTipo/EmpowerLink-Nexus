@@ -1,0 +1,44 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  padding: var(--space-lg);
+  background-color: var(--color-bg);
+  min-height: 100vh;
+}
+
+.dashboard__top {
+  display: flex;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+}
+
+.dashboard__middle {
+  margin-top: var(--space-md);
+}
+
+/* .dashboard__bottom { */
+/*   margin-top: var(--space-md); */
+/* } */
+.dashboard-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+  align-items: stretch;
+}
+
+/* Optional: give cards in this row a consistent look */
+.bottom-card {
+  background-color: #f6fff9;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  flex: 1 1 30%;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
