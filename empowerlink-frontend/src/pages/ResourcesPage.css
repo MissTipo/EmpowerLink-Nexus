@@ -1,0 +1,59 @@
+.resources-page {
+  background-color: var(--color-bg);
+  min-height: 100vh;
+  color: var(--color-on-surface);
+}
+
+.hero-banner {
+  text-align: center;
+  padding: var(--space-lg);
+}
+
+.hero-banner img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: var(--space-md);
+}
+
+.hero-banner h1 {
+  font-size: 2rem;
+  color: var(--color-on-primary);
+}
+
+.resource-controls {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+}
+
+.resource-search {
+  padding: var(--space-sm);
+  border-radius: 4px;
+  border: none;
+  width: 250px;
+}
+
+.filter-btn {
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.resource-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-md);
+  padding: var(--space-lg);
+}
+
+.resource-card {
+  background-color: var(--color-surface);
+  padding: var(--space-md);
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
