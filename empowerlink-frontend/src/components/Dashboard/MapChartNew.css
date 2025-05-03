@@ -1,0 +1,15 @@
+/* src/components/Dashboard/MapChart.css */
+.map-chart {
+  background-color: var(--color-primary);
+  border-radius: 0;
+  padding: var(--space-md);
+  box-shadow: none;
+}
+
+/* Ensure the map scales nicely */
+.map-chart svg {
+  width: 100% !important;
+  height: 300px !important;
+  border-radius: 8px;
+}
+

@@ -1,7 +1,7 @@
 import React from 'react';
 import './Dashboard.css';
 import Hero from './Hero';
-import MapChart from './MapChart';
+import MapChart from './MapChartNew';
 import InclusivityGauge from './InclusivityGauge';
 import InclusivityTrendLine from './InclusivityTrendLine';
 import ResourceMatches from './ResourceMatches';
