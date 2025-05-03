@@ -1,13 +1,47 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* src/index.css */
+
+:root {
+  /* Color Palette */
+  --color-bg: #0A0F0D;             /* very dark charcoal */
+  --color-surface: #121917;        /* slightly lighter background */
+  --color-primary: #017C8C;        /* empowering teal */
+  --color-secondary: #8C6BFF;      /* accent purple */
+  --color-accent: #FFD54F;         /* highlight yellow */
+  --color-on-primary: #FFFFFF;     /* text on primary */
+  --color-on-surface: #E1E8EB;     /* main body text */
+  --color-muted: #6A7C7F;          /* secondary text */
+  --color-error: #E53935;          /* errors, alerts */
+
+  /* Typography */
+  --font-family-base: "Inter", sans-serif;
+  --font-size-base: 16px;
+  --font-size-sm: 0.875rem;
+  --font-size-lg: 1.125rem;
+  --line-height-base: 1.5;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {
+  margin: 0;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  color: var(--color-on-surface);
+  background-color: var(--color-bg);
 }
+
+/* Utility classes */
+.mt-md   { margin-top: var(--space-md); }
+.mb-md   { margin-bottom: var(--space-md); }
+.p-md    { padding: var(--space-md); }
+.text-center { text-align: center; }
+
+a { color: var(--color-primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+button { font-family: inherit; cursor: pointer; }
