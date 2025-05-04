@@ -16,6 +16,8 @@ anyio==4.9.0
     #   watchfiles
 ariadne==0.26.2
     # via -r requirements.in
+async-timeout==5.0.1
+    # via redis
 billiard==4.2.1
     # via celery
 celery==5.5.1
@@ -110,6 +112,8 @@ python-dotenv==1.1.0
 python-multipart==0.0.20
     # via -r requirements.in
 pyyaml==6.0.2
+    # via -r requirements.in
+redis==6.0.0
     # via -r requirements.in
 requests==2.32.3
     # via -r requirements.in

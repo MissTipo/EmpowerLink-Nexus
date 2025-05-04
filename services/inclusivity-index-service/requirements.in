@@ -26,6 +26,7 @@ typing_extensions
 uvicorn
 uvloop
 requests
+redis
 watchfiles
 websockets
 
