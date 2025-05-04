@@ -1,8 +1,18 @@
 FROM python:3.10-slim
+
+# Set the Python path to include the app directory
+ENV PYTHONPATH=/app
+
 WORKDIR /app
-COPY requirements.txt .  
+
+# Install dependencies
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the application code
 COPY app/ ./app/
 COPY workers/ ./workers/
+
+# Start the Celery worker
 CMD ["celery", "-A", "workers.tasks", "worker", "--loglevel=info"]
 
