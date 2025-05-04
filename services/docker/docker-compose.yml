@@ -86,6 +86,9 @@ services:
       - DATABASE_URL=postgresql://empower:empowerpass@empowerdb:5432/empowerdb
       - CELERY_BROKER_URL=redis://redis:6379/0
 
+    labels:
+      kompose.image-pull-policy: "Always"
+
   inclusivity-worker:
     build:
       context: ../inclusivity-index-service
@@ -97,6 +100,9 @@ services:
     environment:
       - DATABASE_URL=postgresql://empower:empowerpass@empowerdb:5432/empowerdb
       - CELERY_BROKER_URL=redis://redis:6379/0
+
+    labels:
+      kompose.image-pull-policy: "Always"
 
   redis:
     image: redis:7
