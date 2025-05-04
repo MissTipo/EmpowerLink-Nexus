@@ -92,38 +92,50 @@ jobs:
         with:
           version: 'v1.26.0'
 
-      - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v1
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
         with:
-          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
-      - name: Set up Google Cloud SDK
-        uses: google-github-actions/setup-gcloud@v1
-        with:
-          project_id: empowerlink-nexus
+      - name: Set Kubernetes Context
+        run: doctl kubernetes cluster kubeconfig save k8s-empowerlink-nexus
 
-      - name: Debug gcloud Auth
-        run: gcloud auth list
 
-      - name: Set active account from JSON key
-        run: |
-          ACCOUNT=$(echo '${{ secrets.GCP_SA_KEY }}' | jq -r '.client_email')
-          gcloud config set account $ACCOUNT
+      - name: Use DO cluster context
+        run: kubectl config use-context do-tor1-k8s-empowerlink-nexus
 
-      - name: Get GKE Credentials
-        run: |
-          gcloud container clusters get-credentials empowerlink-cluster --zone us-central1-a --project empowerlink-nexus
-
-      - name: Configure Kubeconfig
-        env:
-          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-        run: |
-          mkdir -p $HOME/.kube
-          cat $HOME/.kube/config
-
-      - name: Install gke-gcloud-auth-plugin
-        run: |
-          gcloud components install gke-gcloud-auth-plugin -q
+      # - name: Authenticate to Google Cloud
+      #   uses: google-github-actions/auth@v1
+      #   with:
+      #     credentials_json: '${{ secrets.GCP_SA_KEY }}'
+      #
+      # - name: Set up Google Cloud SDK
+      #   uses: google-github-actions/setup-gcloud@v1
+      #   with:
+      #     project_id: empowerlink-nexus
+      #
+      # - name: Debug gcloud Auth
+      #   run: gcloud auth list
+      #
+      # - name: Set active account from JSON key
+      #   run: |
+      #     ACCOUNT=$(echo '${{ secrets.GCP_SA_KEY }}' | jq -r '.client_email')
+      #     gcloud config set account $ACCOUNT
+      #
+      # - name: Get GKE Credentials
+      #   run: |
+      #     gcloud container clusters get-credentials empowerlink-cluster --zone us-central1-a --project empowerlink-nexus
+      #
+      # - name: Configure Kubeconfig
+      #   env:
+      #     KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+      #   run: |
+      #     mkdir -p $HOME/.kube
+      #     cat $HOME/.kube/config
+      #
+      # - name: Install gke-gcloud-auth-plugin
+      #   run: |
+      #     gcloud components install gke-gcloud-auth-plugin -q
 
       - name: Ensure full cleanup of geospatial-mapping
         run: |
