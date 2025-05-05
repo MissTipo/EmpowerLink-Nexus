@@ -73,8 +73,8 @@ async def graphql_proxy(request: Request):
     query = body.get("query", "")
 
     # Pull out the very first field in the `{ ... }` selection set:
-    # m = re.search(r"\{\s*([A-Za-z0-9_]+)", query)
-    m = re.search(r"(?:query|mutation)?\s*[A-Za-z0-9_]*\s*\{\s*([A-Za-z0-9_]+)", query)
+    m = re.search(r"\{\s*([A-Za-z0-9_]+)", query)
+    # m = re.search(r"(?:query|mutation)?\s*[A-Za-z0-9_]*\s*\{\s*([A-Za-z0-9_]+)", query)
 
     if not m:
         return JSONResponse(
