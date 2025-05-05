@@ -1,7 +1,7 @@
 import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from ariadne import load_schema_from_path, make_executable_schema
+from ariadne import load_schema_from_path, make_executable_schema, QueryType
 from ariadne.asgi import GraphQL
 
 from app.database import Base, engine
