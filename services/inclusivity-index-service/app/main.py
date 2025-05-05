@@ -1,13 +1,12 @@
 import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from ariadne import load_schema_from_path, make_executable_schema, QueryType
+from ariadne import load_schema_from_path, make_executable_schema
 from ariadne.asgi import GraphQL
 
 from app.database import Base, engine
 from app.routes import router as inclusivity_router
 from app.graphql.resolvers import query
-from app.graphql.resolvers import resolve_compute_index
 
 app = FastAPI(title="Inclusivity Index Service")
 
@@ -20,13 +19,6 @@ app.add_middleware(
 
 # mount REST endpoints
 app.include_router(inclusivity_router)
-
-# Create GraphQL type definitions
-query = QueryType()
-
-# Set GraphQL query field to the appropriate resolver
-query.set_field("computeInclusivityIndex", resolve_compute_index)
-
 
 # mount GraphQL
 schema_dir = os.path.join(os.path.dirname(__file__), "graphql")
