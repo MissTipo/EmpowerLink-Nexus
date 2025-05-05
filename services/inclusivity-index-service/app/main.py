@@ -7,6 +7,7 @@ from ariadne.asgi import GraphQL
 from app.database import Base, engine
 from app.routes import router as inclusivity_router
 from app.graphql.resolvers import query
+from app.graphql.resolvers import resolve_compute_index
 
 app = FastAPI(title="Inclusivity Index Service")
 
@@ -24,7 +25,7 @@ app.include_router(inclusivity_router)
 query = QueryType()
 
 # Set GraphQL query field to the appropriate resolver
-query.set_field("computeInclusivityIndex", resolve_compute_inclusivity_index)
+query.set_field("computeInclusivityIndex", resolve_compute_index)
 
 
 # mount GraphQL
