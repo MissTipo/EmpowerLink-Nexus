@@ -21,3 +21,4 @@ EXPOSE 8006
 
 # Run the API server
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8006"]
+
