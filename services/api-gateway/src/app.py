@@ -82,9 +82,11 @@ async def graphql_proxy(request: Request):
             status_code=400
         )
     field = m.group(1)
+    print(f"[Gateway] extracted field → {field!r}")
 
     # Look up which service to call
     url = SERVICE_MAP.get(field)
+    print(f"[Gateway] mapped URL     → {url!r}")
     if not url:
         return JSONResponse(
             {"errors":[{"message":f"Unknown operation: {field}"}]},
