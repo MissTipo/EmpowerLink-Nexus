@@ -147,11 +147,11 @@ jobs:
 
       - name: Ensure full cleanup of inclusivity-index
         run: |
-          kubectl delete deployment inclusivity-index --ignore-not-found=true --grace-period=0 --force
-          kubectl delete rs -l app=inclusivity-index --ignore-not-found=true
-          kubectl delete pods -l app=inclusivity-index --ignore-not-found=true
-          kubectl delete service inclusivity-index --ignore-not-found=true
-          kubectl delete service inclusivity-index-service --ignore-not-found=true
+          kubectl delete deployment inclusivity-index-service --ignore-not-found=true --grace-period=0 --force
+          kubectl delete rs -l app=inclusivity-index-service --ignore-not-found=true
+          kubectl delete pods -l app=inclusivity-index-sevice --ignore-not-found=true
+          kubectl delete service inclusivity-index-service-service --ignore-not-found=true
+          kubectl delete service inclusivity-index-service-service --ignore-not-found=true
 
           # Verify it's gone
           echo "Remaining resources (if any):"
