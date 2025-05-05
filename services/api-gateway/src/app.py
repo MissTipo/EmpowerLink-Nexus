@@ -69,10 +69,23 @@ SERVICE_MAP = {
 @app.post("/graphql")
 @app.post("/graphql/")
 async def graphql_proxy(request: Request):
-    body = await request.json()
+    # 1) Read the full JSON payload
+    try:
+        body = await request.json()
+    except Exception as e:
+        return JSONResponse(
+            {"errors":[{"message": f"Invalid JSON body: {e}"}]},
+            status_code=400
+        )
+
+    # 2) Log it for debugging (will show up in your pod logs)
+    print("=== Incoming GraphQL Payload ===")
+    print(body)
+    print("================================")
+
     query = body.get("query", "")
 
-    # Pull out the very first field in the `{ ... }` selection set:
+    # 3) Pull out the very first field in the `{ ... }` selection set:
     m = re.search(r"\{\s*([A-Za-z0-9_]+)", query)
     # m = re.search(r"(?:query|mutation)?\s*[A-Za-z0-9_]*\s*\{\s*([A-Za-z0-9_]+)", query)
 
@@ -84,7 +97,7 @@ async def graphql_proxy(request: Request):
     field = m.group(1)
     print(f"[Gateway] extracted field → {field!r}")
 
-    # Look up which service to call
+    # 4) Look up which service to call
     url = SERVICE_MAP.get(field)
     print(f"[Gateway] mapped URL     → {url!r}")
     if not url:
@@ -92,10 +105,18 @@ async def graphql_proxy(request: Request):
             {"errors":[{"message":f"Unknown operation: {field}"}]},
             status_code=400
         )
+    print(f"[Gateway] mapped URL     → {url!r}")
+
+    # 5) Forward the *entire* JSON body, including headers like Content-Type / Authorization
+    headers = {
+        "Content-Type": request.headers.get("content-type", "application/json"),
+    }
+    if auth := request.headers.get("authorization"):
+        headers["Authorization"] = auth
 
     # Proxy the entire GraphQL payload
     async with httpx.AsyncClient(follow_redirects=True) as client:
-        resp = await client.post(url, json=body)
+        resp = await client.post(url, json=body, headers=headers, timeout=10)
         try:
             data = resp.json()
         except Exception:
