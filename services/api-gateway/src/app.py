@@ -53,7 +53,7 @@ SERVICE_MAP = {
     "requestResourceMatching": "http://resource-matching-service:8004/graphql/",
 
     # Inclusivity Index Service
-    "getInclusivityIndex": "http://inclusivity-index-service:8005/graphql/",
+    "computeInclusivityIndex": "http://inclusivity-index-service:8005/graphql/",
     "updateInclusivityIndex": "http://inclusivity-index-service:8005/graphql/",
 
     # Geospatial Mapping Service
