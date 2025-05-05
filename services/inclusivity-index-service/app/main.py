@@ -20,6 +20,13 @@ app.add_middleware(
 # mount REST endpoints
 app.include_router(inclusivity_router)
 
+# Create GraphQL type definitions
+query = QueryType()
+
+# Set GraphQL query field to the appropriate resolver
+query.set_field("computeInclusivityIndex", resolve_compute_inclusivity_index)
+
+
 # mount GraphQL
 schema_dir = os.path.join(os.path.dirname(__file__), "graphql")
 type_defs   = load_schema_from_path(schema_dir)
