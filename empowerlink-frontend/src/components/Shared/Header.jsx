@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Header.css';
-import logo from '../../assets/logo.png';
+import logo from '../../assets/logo.webp';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 
@@ -10,7 +10,7 @@ export default function Header() {
     <header className="header">
       <div className="header__brand">
         <img src={logo} alt="EmpowerLink Nexus" className="header__logo" />
-        <h1 className="header__title">EmpowerLink Nexus</h1>
+        <h1 className="header__title">ELN</h1>
       </div>
       <nav className="header__nav">
         <Link to="/dashboard">Dashboard</Link>

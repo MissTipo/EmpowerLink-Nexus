@@ -12,7 +12,7 @@ export default function Dashboard() {
     <div className="dashboard-page">
       <Hero
         title="EmpowerLink Nexus"
-        subtitle="Empowering Communities for Access, Equity and Impact"
+        subtitle="Inclusive Empowerment & Resource Network"
       >
         <MapChart />
       </Hero>

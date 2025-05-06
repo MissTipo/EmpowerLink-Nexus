@@ -1,9 +1,18 @@
 // src/apolloClient.js
-import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
+import { ApolloClient, InMemoryCache, createHttpLink, ApolloLink } from '@apollo/client';
+
+const loggingLink = new ApolloLink((operation, forward) => {
+  console.log("🚀 GraphQL Request Body:", {
+    operationName: operation.operationName,
+    variables: operation.variables,
+    context: operation.getContext(),
+  });
+  return forward(operation);
+});
 
 const httpLink = createHttpLink({
   // uri: 'http://127.0.0.1:8000/graphql/', // Adjust the URL as needed
-  uri: 'http://35.238.68.232.nip.io/graphql/', // Adjust the URL as needed
+  uri: 'http://159.203.54.10.nip.io/graphql', // Adjust the URL as needed
 });
 
 const client = new ApolloClient({
