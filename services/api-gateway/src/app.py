@@ -116,7 +116,7 @@ async def graphql_proxy(request: Request):
 
     # Proxy the entire GraphQL payload
     async with httpx.AsyncClient(follow_redirects=True) as client:
-        resp = await client.post(url, json=body, headers=headers, timeout=10)
+        resp = await client.post(url, json=body, headers=headers, timeout=60)
         try:
             data = resp.json()
         except Exception:
