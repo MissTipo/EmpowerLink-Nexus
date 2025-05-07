@@ -18,7 +18,7 @@ async def resolve_get_ussd_menu(_, info, phoneNumber, input):
         # "sessionId":      info.context["request"].headers.get("X‑USSD‑Session‑Id", "demo"),
         "sessionId":   info.context["request"].headers.get("X-USSD-Session-Id", "demo"),
         # "serviceCode":    info.context["request"]. headers.get("X‑USSD‑Service‑Code", "*123#"),
-        "serviceCode": info.context["request"].headers.get("X-USSD-Service-Code", "*123#"),
+        "serviceCode": info.context["request"].headers.get("X-USSD-Service-Code", settings.USSD_CODE),
         "phoneNumber":    phoneNumber,
         "text":           input or ""
     }
