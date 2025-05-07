@@ -194,14 +194,39 @@ def test_skip_name_assigns_default_and_still_registers(monkeypatch):
 def test_service_menu_after_registration():
     """After full registration, selecting service '2' returns Police & Justice."""
     phone = "+300"
-    # pre-register ourselves
-    REGISTERED_USERS[phone] = {"name":"Zoe","location":"Nairobi","language":"English"}
-    # simulate fourth input selecting option 2
-    r = client.post("/ussd", data={
-        "sessionId":"s3","serviceCode":"*999#","phoneNumber":phone,"text":"1*Zoe*Nairobi*2"
+    session_id = "s3"
+
+    REGISTERED_USERS[phone] = {"name": "Zoe", "location": "Nairobi", "language": "English"}
+
+    # Simulate starting the session
+    client.post("/ussd", data={
+        "sessionId": session_id, "serviceCode": "*999#", "phoneNumber": phone, "text": ""
     })
+
+    # Simulate selecting language
+    client.post("/ussd", data={
+        "sessionId": session_id, "serviceCode": "*999#", "phoneNumber": phone, "text": "1"
+    })
+
+    # Simulate selecting service option 2
+    r = client.post("/ussd", data={
+        "sessionId": session_id, "serviceCode": "*999#", "phoneNumber": phone, "text": "1*2"
+    })
+
     assert r.text.startswith("END")
-    assert "Justice" in r.text or "Police" in r.text
+    assert "Police & Justice" in r.text
+
+# def test_service_menu_after_registration():
+#     """After full registration, selecting service '2' returns Police & Justice."""
+#     phone = "+300"
+#     # pre-register ourselves
+#     REGISTERED_USERS[phone] = {"name":"Zoe","location":"Nairobi","language":"English"}
+#     # simulate fourth input selecting option 2
+#     r = client.post("/ussd", data={
+#         "sessionId":"s3","serviceCode":"*999#","phoneNumber":phone,"text":"1*Zoe*Nairobi*2"
+#     })
+#     assert r.text.startswith("END")
+#     assert "Justice" in r.text or "Police" in r.text
 
 def test_dummy_graphql_query_and_mutation():
     """Exercise the GraphQL (/graphql) dummy resolvers."""
