@@ -44,8 +44,8 @@ SERVICE_MAP = {
     # Telephony Integration Service
     "logIVRInteraction": "http://telephony-integration:8003/graphql/",
     "getUSSDMenu": "http://telephony-integration:8003/graphql/",
-    "dummy": "http://telephony-integration:8003/graphql/",
-    "dummyMutation": "http://telephony-integration:8003/graphql/",
+    # "dummy": "http://telephony-integration:8003/graphql/",
+    # "dummyMutation": "http://telephony-integration:8003/graphql/",
 
     # Resource Matching Service
     "getMatchingResources": "http://resource-matching-service:8004/graphql/",

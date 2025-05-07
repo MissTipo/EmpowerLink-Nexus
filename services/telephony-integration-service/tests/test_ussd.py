@@ -5,6 +5,16 @@ from app.ussd_routes import USSD_SESSIONS, REGISTERED_USERS
 
 client = TestClient(app)
 
+@pytest.fixture(autouse=True)
+def clear_state():
+    # before each test
+    USSD_SESSIONS.clear()
+    REGISTERED_USERS.clear()
+    yield
+    # after each test
+    USSD_SESSIONS.clear()
+    REGISTERED_USERS.clear()
+
 def test_initial_menu():
     # When text is empty, expect language selection.
     response = client.post(
@@ -143,3 +153,63 @@ def test_service_menu_selection():
            "social support" in r.text.lower() or \
            "invalid selection" in r.text.lower()
 
+
+def test_invalid_language_selection():
+    """If user enters something other than 1 or 2 on first prompt, we END."""
+    r = client.post("/ussd", data={
+        "sessionId": "s1", "serviceCode": "*999#", "phoneNumber": "+100", "text": "9"
+    })
+    assert r.text.startswith("END")
+    assert "Invalid selection" in r.text
+
+def test_skip_name_assigns_default_and_still_registers(monkeypatch):
+    """Make sure that skipping name (enter 0) still stores a User_xxxx default name."""
+    # Step0 -> language
+    client.post("/ussd", data={"sessionId":"s2","serviceCode":"*999#","phoneNumber":"+200","text":""})
+    # Step1 -> select language English
+    client.post("/ussd", data={"sessionId":"s2","serviceCode":"*999#","phoneNumber":"+200","text":"1"})
+    # Step2 -> skip name "0"
+    client.post("/ussd", data={
+        "sessionId":"s2","serviceCode":"*999#","phoneNumber":"+200","text":"1*0"
+    })
+    # Now register location Mombasa -> we need to mock the GraphQL call so it doesn't actually fire
+    async def fake_post(self, url, *, data=None, json=None, **kwargs):
+        class FakeResp:
+            status_code=200
+            text=""
+            def raise_for_status(self): pass
+        return FakeResp()
+    monkeypatch.setattr("app.ussd_routes.httpx.AsyncClient.post", fake_post)
+    
+    r = client.post("/ussd", data={
+        "sessionId":"s2","serviceCode":"*999#","phoneNumber":"+200","text":"1*0*Mombasa"
+    })
+    assert "Registration successful" in r.text
+    # user stored
+    stored = REGISTERED_USERS["+200"]
+    assert stored["location"] == "Mombasa"
+    assert stored["name"].startswith("User_")
+    assert stored["language"] == "English"
+
+def test_service_menu_after_registration():
+    """After full registration, selecting service '2' returns Police & Justice."""
+    phone = "+300"
+    # pre-register ourselves
+    REGISTERED_USERS[phone] = {"name":"Zoe","location":"Nairobi","language":"English"}
+    # simulate fourth input selecting option 2
+    r = client.post("/ussd", data={
+        "sessionId":"s3","serviceCode":"*999#","phoneNumber":phone,"text":"1*Zoe*Nairobi*2"
+    })
+    assert r.text.startswith("END")
+    assert "Justice" in r.text or "Police" in r.text
+
+def test_dummy_graphql_query_and_mutation():
+    """Exercise the GraphQL (/graphql) dummy resolvers."""
+    # query
+    resp_q = client.post("/graphql", json={"query":"{ dummy }"})
+    assert resp_q.status_code == 200
+    assert resp_q.json()["data"]["dummy"] == "dummy response"
+    # mutation
+    resp_m = client.post("/graphql", json={"query":"mutation { dummyMutation }"})
+    assert resp_m.status_code == 200
+    assert resp_m.json()["data"]["dummyMutation"] == "dummy mutation response"
