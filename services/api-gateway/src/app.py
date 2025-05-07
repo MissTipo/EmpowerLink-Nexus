@@ -124,3 +124,14 @@ async def graphql_proxy(request: Request):
             return JSONResponse(content=data, status_code=502)
     return JSONResponse(content=data, status_code=resp.status_code)
 
+@app.post("/ussd")
+async def proxy_ussd(request: Request):
+    # forward to the telephony service
+    body = await request.body()
+    async with httpx.AsyncClient() as client:
+        resp = await client.post(
+            "http://telephony-integration:8003/ussd",
+            data=body,
+            headers=request.headers.raw,
+        )
+    return PlainTextResponse(resp.text, status_code=resp.status_code)
