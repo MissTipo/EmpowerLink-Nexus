@@ -8,7 +8,7 @@ class Settings(BaseSettings):
     # The GraphQL endpoint of the user profile service. Adjust as needed.
     USER_PROFILE_GRAPHQL_URL: str = "http://159.203.54.10.nip.io/graphql"
     # USSD_CALLBACK_URL: str = "http://telephony-integration-service:8000/ussd"
-    USSD_CALLBACK_URL: str = "http://159.203.54.10.nip.io/graphql"
+    USSD_CALLBACK_URL: str = "http://159.203.54.10.nip.io/ussd"
 
     
     model_config = SettingsConfigDict(env_file=".env")
