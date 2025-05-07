@@ -15,8 +15,10 @@ async def resolve_get_ussd_menu(_, info, phoneNumber, input):
     """
     # Build the USSD POST form
     form = {
-        "sessionId":      info.context["request"].headers.get("X‑USSD‑Session‑Id", "demo"),
-        "serviceCode":    info.context["request"].headers.get("X‑USSD‑Service‑Code", "*123#"),
+        # "sessionId":      info.context["request"].headers.get("X‑USSD‑Session‑Id", "demo"),
+        "sessionId":   info.context["request"].headers.get("X-USSD-Session-Id", "demo"),
+        # "serviceCode":    info.context["request"]. headers.get("X‑USSD‑Service‑Code", "*123#"),
+        "serviceCode": info.context["request"].headers.get("X-USSD-Service-Code", "*123#"),
         "phoneNumber":    phoneNumber,
         "text":           input or ""
     }
