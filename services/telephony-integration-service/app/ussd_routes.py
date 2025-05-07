@@ -20,6 +20,10 @@ async def ussd_callback(
     phoneNumber: str = Form(...),
     text: str = Form(...)
 ):
+    # initialize session if missing
+    if sessionId not in USSD_SESSIONS:
+        USSD_SESSIONS[sessionId] = {}
+
     """
     Simulates a USSD registration flow.
     Steps:
