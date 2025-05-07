@@ -1,7 +1,7 @@
 # 📑 EmpowerLink Nexus: 16-Hour Debugging Postmortem
 
 **Date:** May 6, 2025  
-**Author:** Dorinen Tipo  
+**Author:** Dorine Tipo  
 
 ---
 
@@ -97,7 +97,7 @@ A series of cascading infrastructure misconfigurations and oversights resulted i
 
 | Task | Owner | Priority |
 |:------|:------|:------|
-| Automate external IP registration to nip.io in CI/CD | Doreen | High |
+| Automate external IP registration to nip.io in CI/CD | Dorine | High |
 | Refactor Kong Ingress to run exclusively in `default` or dedicated `infra` namespace | Dorine | Medium |
 | Add strict image pull policy and post-deploy cleanup job | Dorine | High |
 | Improve frontend config management for environment-based URIs | Dorine | Medium |
