@@ -15,8 +15,22 @@ from ariadne.asgi import GraphQL
 from ariadne import load_schema_from_path, make_executable_schema, QueryType, MutationType
 from app.graphql.resolvers import resolve_dummy, resolve_dummy_mutation
 from app.graphql.resolvers import query as graphql_query, mutation as graphql_mutation
+from starlette.middleware.base import BaseHTTPMiddleware
+
+class NormalizeHyphensMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        corrected = []
+        for raw_key, raw_val in request.scope["headers"]:
+            # decode as latin‑1, replace non‑breaking hyphens, re‑encode
+            ascii_key = raw_key.decode("latin-1").replace("\u2011", "-").encode("latin-1")
+            corrected.append((ascii_key, raw_val))
+        request.scope["headers"] = corrected
+        return await call_next(request)
 
 app = FastAPI(title="Telephony Integration Service")
+
+# Middleware to normalize hyphens in headers (insert before CORS or any other)
+app.add_middleware(NormalizeHyphensMiddleware)
 
 # Global CORS settings
 app.add_middleware(
