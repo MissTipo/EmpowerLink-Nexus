@@ -18,11 +18,11 @@ def get_matching_resources(request: MatchRequest):
 
         # 2. Fetch resource details from DB
         db: Session = SessionLocal()
-        matched_resources = db.query(Resource).filter(Resource.id.in_(resource_ids)).all()
+        matched_resources = db.query(Resource).filter(Resource.resource_id.in_(resource_ids)).all()
         db.close()
 
         # 3. Reorder & structure response
-        resource_map = {str(r.id): r for r in matched_resources}
+        resource_map = {str(r.resource_id): r for r in matched_resources}
         ordered_results = []
         for match in matched_ids_with_scores:
             res_obj = resource_map.get(match["resource_id"])
