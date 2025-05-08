@@ -37,8 +37,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Set DATABASE_URL from GitHub Secrets
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
       - name: Run pytest
         run: |
+          echo "DATABASE_URL=${DATABASE_URL}"  # Optional: Debug by printing the value of DATABASE_URL
           python3 -m pytest
 
   train_and_package:
