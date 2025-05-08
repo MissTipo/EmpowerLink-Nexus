@@ -107,7 +107,7 @@ def test_real_transformer_output_shape():
 # DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./test.db")
 
 # Pick up DATABASE_URL from .env if set, otherwise use in-memory SQLite
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://<POSTGRES_USER>:<POSTGRES_PASSWORD>@localhost:5432/<POSTGRES_DB>")
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 # ─── Fixtures ───────────────────────────────────────────────────────────────
 
