@@ -18,6 +18,7 @@ type GeoPoint {
   longitude: Float!
 }
 
+# 1. Single resource
 type Resource {
   resource_id: ID!
   service_type: ServiceType!
@@ -29,10 +30,37 @@ type Resource {
   tags: JSON!
 }
 
+# 2. Resource match
 type ResourceMatch {
   resource: Resource!
   score: Float!
 }
+
+# 3. Resources per Capita
+ type ResourcesPerCapita {
+   regionId: Int!
+   regionName: String!
+   category: String!
+   resourcesCount: Int!
+   populationInNeed: Int!
+   perThousandNeeded: Float!
+ }
+
+# 4. Resource‑Need Gap
+ type ResourceNeedGap {
+   regionId: Int!
+   regionName: String!
+   category: String!
+   demandCount: Int!
+   supplyCount: Int!
+   gap: Int!          # supplyCount - demandCount
+ }
+
+# 5. Match‑Success Rate Over Time
+ type MatchSuccessRatePoint {
+   month: String!
+   successRate: Float!
+ }
 
 type Query {
   getMatchingResources(
@@ -47,13 +75,13 @@ type Query {
     limit: Int = 5
   ): [ResourceMatch!]!
 
-  # New: list all (or filtered) resources
+  # 2. list all (or filtered) resources
   getAvailableResources(
     serviceType: ServiceType
     limit: Int = 50
   ): [Resource!]!
 
-  # New: alias for triggering a match request  
+  # 3. alias for triggering a match request  
   requestResourceMatching(
     userId: ID!
     serviceType: ServiceType!
@@ -65,6 +93,10 @@ type Query {
     maxDistanceKm: Float
     limit: Int = 5
   ): [ResourceMatch!]!
+  # 4. get resources per capita
+  resourcesPerCapita: [ResourcesPerCapita!]!
+  resourceNeedGap: [ResourceNeedGap!]!
+  matchSuccessRate(regionId: Int!): [MatchSuccessRatePoint!]!
 }
 
 input ResourceInput {
