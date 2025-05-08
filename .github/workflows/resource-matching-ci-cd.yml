@@ -38,8 +38,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Set DATABASE_URL from GitHub Secrets
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: echo "DATABASE_URL=${{ secrets.DATABASE_URL }}"
 
       - name: Run pytest
         run: |
