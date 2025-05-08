@@ -26,45 +26,50 @@ async def ussd_callback(
 
     session = USSD_SESSIONS[sessionId]
 
-    """
-    Simulates a USSD registration flow.
-    Steps:
-      0. On empty text: Display language selection.
-      1. After language selection: If user not registered, ask for registration details; if registered, show service menu.
-      2. Collect user name.
-      3. Collect user location.
-      4. Complete registration and display service menu.
-    """
+    user_response = text.split("*") if text else []
+
+    # Step 0: Initial request — no text submitted yet.
     if text == "":
         session["step"] = 0
         return "CON Welcome to EmpowerLink Nexus!\nPlease select your language:\n1. English\n2. Kiswahili"
 
-    user_response = text.split("*")
-    latest_input = user_response[-1].strip()
+    # Use step counter to track progress
+    step = session.get("step", 0)
 
-    if session["step"] == 0:
-        if latest_input not in ["1", "2"]:
+    # Step 1: Language selection
+    if step == 0:
+        selected_option = user_response[-1].strip()
+        if selected_option not in ["1", "2"]:
             return "END Invalid selection. Goodbye."
 
-        language = "English" if latest_input == "1" else "Kiswahili"
+        language = "English" if selected_option == "1" else "Kiswahili"
         session["language"] = language
 
         if phoneNumber in REGISTERED_USERS:
-            session["step"] = 3  # Skip to service menu
-            return f"CON Welcome back! (Language: {language})\n1. Health Assistance\n2. Police & Justice Help\n3. Social Support"
+            # Already registered, jump to service menu
+            session["step"] = 99  # special code for service menu directly
+            return (f"CON Welcome back! (Language: {language})\n"
+                    "1. Health Assistance\n2. Police & Justice Help\n3. Social Support")
+
         else:
             session["step"] = 1
             return f"CON Language set to {language}.\nTo register, please enter your name (or enter 0 to skip):"
 
-    elif session["step"] == 1:
-        name = latest_input if latest_input != "0" else f"User_{phoneNumber[-4:]}"
+    # Step 2: Collect Name
+    elif step == 1:
+        name_input = user_response[-1].strip()
+        name = name_input if name_input and name_input != "0" else f"User_{phoneNumber[-4:]}"
         session["name"] = name
         session["step"] = 2
         return "CON Please enter your location:"
 
-    elif session["step"] == 2:
-        location = latest_input
+    # Step 3: Collect Location and Register
+    elif step == 2:
+        location = user_response[-1].strip()
         session["location"] = location
+
+        name = session.get("name", f"User_{phoneNumber[-4:]}")
+        language = session.get("language", "English")
 
         mutation = """
         mutation CreateUserProfile($input: UserProfileInput!) {
@@ -79,7 +84,7 @@ async def ussd_callback(
         variables = {
             "input": {
                 "phone_number": phoneNumber,
-                "name": session["name"],
+                "name": name,
                 "location": location,
                 "gender": None,
                 "age": None
@@ -93,25 +98,21 @@ async def ussd_callback(
         except Exception as e:
             return f"END Registration error: {str(e)}"
 
-        REGISTERED_USERS[phoneNumber] = {
-            "name": session["name"],
-            "location": location,
-            "language": session["language"]
-        }
+        REGISTERED_USERS[phoneNumber] = {"name": name, "location": location, "language": language}
 
-        session["step"] = 3
+        session["step"] = 99  # move to service menu
         return ("CON Registration successful!\n"
                 "Service Menu:\n"
-                "1. Health Assistance\n"
-                "2. Police & Justice Help\n"
-                "3. Social Support Services")
+                "1. Health Assistance\n2. Police & Justice Help\n3. Social Support Services")
 
-    elif session["step"] == 3:
-        if latest_input == "1":
+    # Step 4: Service Selection
+    elif step == 99:
+        option = user_response[-1].strip()
+        if option == "1":
             return "END You selected Health Assistance. Our team will contact you shortly."
-        elif latest_input == "2":
+        elif option == "2":
             return "END You selected Police & Justice Help. Assistance is on the way."
-        elif latest_input == "3":
+        elif option == "3":
             return "END You selected Social Support Services. Please hold while we connect you."
         else:
             return "END Invalid selection. Goodbye."
@@ -119,6 +120,7 @@ async def ussd_callback(
     else:
         return "END Invalid input. Please try again."
 
+        
     # Step 0: Initial entry, show language selection if no text submitted.
     # if text == "":
     #     session["step"] = 0
