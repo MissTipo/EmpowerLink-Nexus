@@ -107,9 +107,16 @@ def test_real_transformer_output_shape():
 # DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./test.db")
 
 # Pick up DATABASE_URL from .env if set, otherwise use in-memory SQLite
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///:memory:")
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 # ─── Fixtures ───────────────────────────────────────────────────────────────
+
+@pytest.fixture(scope="session")
+def engine():
+    engine = create_engine(DATABASE_URL)
+    Base.metadata.create_all(bind=engine)
+    yield engine
+    engine.dispose()
 
 @pytest.fixture(scope="module")
 def engine():
