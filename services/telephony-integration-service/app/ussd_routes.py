@@ -65,11 +65,39 @@ async def ussd_callback(
 
     # Step 3: Collect Location and Register
     elif step == 2:
-        location = user_response[-1].strip()
-        session["location"] = location
+        raw_loc = user_response[-1].strip()
+        session["raw_location"] = raw_loc
 
-        name = session.get("name", f"User_{phoneNumber[-4:]}")
-        language = session.get("language", "English")
+        # 1) Ask geospatial-mapping service to resolve that raw input:
+        try:
+            async with httpx.AsyncClient() as client:
+                geo_resp = await client.post(
+                    settings.GEOMAP_URL + "/forward",  # or "/reverse" for lat/lon
+                    json={"query": raw_loc}
+                )
+                geo_resp.raise_for_status()
+                geo_data = geo_resp.json()
+
+                # 2) Extract the cleaned place name and coords (adapt to your geo API shape)
+                if geo_data.get("matches"):
+                    match = geo_data["matches"][0]
+                    place_name = match["name"]
+                    coords     = match["coords"]          # e.g. {"lat": 1.23, "lon": 4.56}
+                else:
+                    place_name = raw_loc                  # fallback
+                    coords     = None
+
+        except Exception:
+            # fallback if anything goes wrong
+            place_name, coords = raw_loc, None
+
+        session["location"] = place_name
+        session["coords"]   = coords
+        # location = user_response[-1].strip()
+        # session["location"] = location
+        #
+        # name = session.get("name", f"User_{phoneNumber[-4:]}")
+        # language = session.get("language", "English")
 
         mutation = """
         mutation CreateUserProfile($input: UserProfileInput!) {
@@ -78,14 +106,16 @@ async def ussd_callback(
             name
             phone_number
             location
+            geo { lat lon }
           }
         }
         """
         variables = {
             "input": {
                 "phone_number": phoneNumber,
-                "name": name,
-                "location": location,
+                "name": session.get("name", f"User_{phoneNumber[-4:]}"),
+                "location": place_name,
+                "geo": coords,
                 "gender": None,
                 "age": None
             }
@@ -98,7 +128,7 @@ async def ussd_callback(
         except Exception as e:
             return f"END Registration error: {str(e)}"
 
-        REGISTERED_USERS[phoneNumber] = {"name": name, "location": location, "language": language}
+        REGISTERED_USERS[phoneNumber] = {"name": session.get("name", f"User_{phoneNumber[-4:]}"), "location": place_name, "language": session.get("language", "en")}
 
         session["step"] = 99  # move to service menu
         return ("CON Registration successful!\n"
