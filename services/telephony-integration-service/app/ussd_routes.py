@@ -13,6 +13,12 @@ router = APIRouter()
 USSD_SESSIONS = {}
 REGISTERED_USERS = {}
 
+def end_session(session_id, message):
+    if session_id in USSD_SESSIONS:
+        del USSD_SESSIONS[session_id]
+    return f"END {message}"
+
+
 @router.post("/ussd", response_class=PlainTextResponse)
 async def ussd_callback(
     sessionId: str = Form(...),
@@ -139,16 +145,16 @@ async def ussd_callback(
     elif step == 99:
         option = user_response[-1].strip()
         if option == "1":
-            return "END You selected Health Assistance. Our team will contact you shortly."
+            return end_session(sessionId,"You selected Health Assistance. Our team will contact you shortly.")
         elif option == "2":
-            return "END You selected Police & Justice Help. Assistance is on the way."
+            return end_session(sessionId,"You selected Police & Justice Help. Assistance is on the way.")
         elif option == "3":
-            return "END You selected Social Support Services. Please hold while we connect you."
+            return end_session(sessionId,"You selected Social Support Services. Please hold while we connect you.")
         else:
-            return "END Invalid selection. Goodbye."
+            return end_session(sessionId,"Invalid selection. Goodbye.")
 
     else:
-        return "END Invalid input. Please try again."
+        return end_session(sessionId,"Invalid input. Please try again.")
 
         
     # Step 0: Initial entry, show language selection if no text submitted.
