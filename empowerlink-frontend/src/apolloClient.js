@@ -12,11 +12,11 @@ const loggingLink = new ApolloLink((operation, forward) => {
 
 const httpLink = createHttpLink({
   // uri: 'http://127.0.0.1:8000/graphql/', // Adjust the URL as needed
-  uri: 'http://159.203.54.10.nip.io/graphql', // Adjust the URL as needed
+  uri: 'https://159.203.54.10.nip.io/graphql', // Adjust the URL as needed
 });
 
 const client = new ApolloClient({
-  link: httpLink,
+  link: ApolloLink.from([loggingLink,httpLink]),
   cache: new InMemoryCache(),
 });
 
