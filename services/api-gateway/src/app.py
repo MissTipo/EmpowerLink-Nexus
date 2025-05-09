@@ -51,6 +51,13 @@ SERVICE_MAP = {
     "getMatchingResources": "http://resource-matching-service:8004/graphql/",
     "getAvailableResources": "http://resource-matching-service:8004/graphql/",
     "requestResourceMatching": "http://resource-matching-service:8004/graphql/",
+    "requestResourceMatching": "http://resource-matching-service:8004/graphql/",
+    "createResource": "http://resource-matching-service:8004/graphql/",
+
+    # Analytics & Reporting
+    "resourcesPerCapita": "http://resource-matching-service:8004/graphql/",
+    "resourceNeedGap": "http://resource-matching-service:8004/graphql/",
+    "matchSuccessRate": "http://resource-matching-service:8004/graphql/",
 
     # Inclusivity Index Service
     "computeInclusivityIndex": "http://inclusivity-index-service:8006/graphql/",

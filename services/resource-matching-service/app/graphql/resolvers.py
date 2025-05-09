@@ -1,6 +1,6 @@
 import requests
 import datetime
-from sqlalchemy import func, Integer
+from sqlalchemy import func, Integer, cast
 from ariadne import MutationType, QueryType, make_executable_schema, load_schema_from_path
 from app.models import Resource, Region, DemandLog, MatchLog
 from app.schemas import ResourceOut
@@ -25,36 +25,94 @@ ORGANIZATION_SERVICE_URL = "http://159.203.54.10.nip.io/graphql"
 def resolve_create_resource(_, info, organizationId, input):
     db = SessionLocal()
 
-    # Fetch the organization by ID from the organization service
-    response = requests.get(f"{ORGANIZATION_SERVICE_URL}{organizationId}")
-    
-    if response.status_code != 200:
+    # Build the GraphQL query
+    graphql_query = {
+        "query": """
+            query ($organizationId: ID!) {
+                getOrganization(organizationId: $organizationId) {
+                    organizationId
+                    name
+                    role
+                }
+            }
+        """,
+        "variables": {"organizationId": organizationId}
+    }
+
+    try:
+        # Make the GraphQL POST request to organization service
+        response = requests.post(
+            ORGANIZATION_SERVICE_URL,
+            json=graphql_query
+        )
+        response.raise_for_status()
+        data = response.json()
+
+        # Error handling
+        if "errors" in data:
+            raise Exception(f"GraphQL error: {data['errors']}")
+
+        organization = data["data"]["getOrganization"]
+        if not organization:
+            raise Exception("Organization not found")
+
+        # Derive the service_type based on the role
+        service_type = ROLE_TO_SERVICE_TYPE.get(organization["role"].lower())
+        if not service_type:
+            raise Exception("Service type not found for the given role")
+
+        # Create the new resource
+        new_resource = Resource(
+            service_type=service_type,
+            organization_id=organizationId,
+            **input
+        )
+
+        db.add(new_resource)
+        db.commit()
+        db.refresh(new_resource)
+        return ResourceOut.from_orm(new_resource)
+
+    except Exception as e:
+        db.rollback()
+        raise e
+    finally:
         db.close()
-        raise Exception("Organization not found or error fetching organization details")
 
-    organization = response.json()  # Assuming the organization details are returned as JSON
-
-    # Derive the service_type based on the role
-    service_type = ROLE_TO_SERVICE_TYPE.get(organization['role'].lower())
-    if not service_type:
-        db.close()
-        raise Exception("Service type not found for the given role")
-
-    # Create the new resource linked to the organization
-    new_resource = Resource(
-        service_type=service_type,
-        organization_id=organizationId,  # Store the organizationId
-        **input  # Unpack input data for latitude, longitude, etc.
-    )
-
-    # Add to the database
-    db.add(new_resource)
-    db.commit()
-    db.refresh(new_resource)
-    db.close()
-
-    # Return the created resource
-    return ResourceOut.from_orm(new_resource)
+# @mutation.field("createResource")
+# def resolve_create_resource(_, info, organizationId, input):
+#     db = SessionLocal()
+#
+#     # Fetch the organization by ID from the organization service
+#     response = requests.get(f"{ORGANIZATION_SERVICE_URL}{organizationId}")
+#     
+#     if response.status_code != 200:
+#         db.close()
+#         raise Exception("Organization not found or error fetching organization details")
+#
+#     organization = response.json()  # Assuming the organization details are returned as JSON
+#
+#     # Derive the service_type based on the role
+#     service_type = ROLE_TO_SERVICE_TYPE.get(organization['role'].lower())
+#     if not service_type:
+#         db.close()
+#         raise Exception("Service type not found for the given role")
+#
+#     # Create the new resource linked to the organization
+#     new_resource = Resource(
+#         service_type=service_type,
+#         organization_id=organizationId,  # Store the organizationId
+#         **input  # Unpack input data for latitude, longitude, etc.
+#     )
+#
+#     # Add to the database
+#     db.add(new_resource)
+#     db.commit()
+#     db.refresh(new_resource)
+#     db.close()
+#
+#     # Return the created resource
+#     return ResourceOut.from_orm(new_resource)
 
 # ─── Queries ────────────────────────────────────────────────────────────────
 
