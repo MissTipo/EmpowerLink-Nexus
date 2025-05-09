@@ -104,7 +104,7 @@ def test_real_transformer_output_shape():
     assert Xt.shape[1] > 0
 
 
-# Pick up DATABASE_URL from .env if set, otherwise use in-memory SQLite
+# Pick up DATABASE_URL from .env
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 # ─── Fixtures ───────────────────────────────────────────────────────────────
