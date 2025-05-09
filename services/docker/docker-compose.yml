@@ -30,7 +30,7 @@ services:
     depends_on:
       - empowerdb
     environment:
-      - DATABASE_URL= ${{ secrets.DATABASE_URL }}
+      - DATABASE_URL=postgresql://empower:empowerpass@empowerdb:5432/empowerdb
 
   organization-profile:
     build:
