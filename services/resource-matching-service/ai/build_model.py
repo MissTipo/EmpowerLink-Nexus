@@ -5,7 +5,7 @@ import argparse
 
 from sqlalchemy.orm import Session
 from app.database import SessionLocal, Base, engine
-from app.models import Resource
+from app.models import Resource, Region
 
 from sklearn.neighbors import NearestNeighbors
 from sklearn.compose import ColumnTransformer
@@ -29,6 +29,13 @@ def seed_sample_resources(n=5):
         db.close()
         return
 
+    # 1) ensure at least one Region exists
+    region = db.query(Region).first()
+    if not region:
+        region = Region(region_name="DefaultRegion", population_in_need=1000)
+        db.add(region)
+        db.commit()       # so region.region_id is populated
+
     fake = Faker()
     samples = []
     for _ in range(n):
@@ -40,7 +47,9 @@ def seed_sample_resources(n=5):
                 cost_level=fake.random_int(min=1, max=5),
                 languages_supported=fake.random_elements(elements=("en","sw","fr","es"), length=2, unique=True),
                 capacity=fake.random_int(min=1, max=100),
-                tags=fake.random_elements(elements=("free","childcare","accessible","remote"), length=2)
+                tags=fake.random_elements(elements=("free","childcare","accessible","remote"), length=2),
+                region_id=region.region_id,
+                organization_id="org-default"
             )
         )
     db.add_all(samples)
