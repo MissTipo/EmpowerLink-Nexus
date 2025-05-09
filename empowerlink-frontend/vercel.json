@@ -6,6 +6,7 @@
       "use": "@vercel/static-build"
     }
   ],
+  "installCommand": "npm install --legacy-peer-deps",
   "routes": [
     {
       "src": "/(.*)",
