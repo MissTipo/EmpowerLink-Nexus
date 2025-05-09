@@ -4,7 +4,7 @@ import Hero from './Hero';
 import MapChart from './MapChartNew';
 import InclusivityGauge from './InclusivityGauge';
 import InclusivityTrendLine from './InclusivityTrendLine';
-import ResourceMatches from './ResourceMatches';
+import ResourceHeatMap from './ResourceHeatMap';
 import empowerDesign from '../../assets/empower2.avif';
 
 export default function Dashboard() {
@@ -20,7 +20,7 @@ export default function Dashboard() {
       <div className="dashboard-stats">
         <InclusivityGauge />
         <InclusivityTrendLine />
-        <ResourceMatches />
+        <ResourceHeatMap />
       </div>
       <div className="dashboard-bottom">
         <div className="bottom-card">
