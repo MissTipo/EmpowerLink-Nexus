@@ -8,14 +8,13 @@ EmpowerLink Nexus is a modular, scalable backend platform designed to address so
 
 | Service                       | Description                                                | Tech Stack                                 |
 |:-----------------------------|:-----------------------------------------------------------|:-------------------------------------------|
-| **[API Gateway](./api-gateway)**               | Central GraphQL gateway aggregating queries across services | FastAPI, Ariadne, Docker, Kubernetes       |
-| **[User Profile Service](./user-profile-service)**     | Manages user profiles and authentication                     | FastAPI, Ariadne, SQLAlchemy, PostgreSQL   |
-| **[Resource Matching Service](./resource-matching-service)** | AI-powered resource matching for users and NGOs               | FastAPI, Scikit-learn, Ariadne, PostgreSQL |
-| **[Inclusivity Index Service](./inclusivity-index-service)** | Generates inclusivity and accessibility scores for regions    | FastAPI, Celery, Ariadne, PostgreSQL       |
-| **[Geospatial Mapping Service](./geospatial-mapping-service)** | Maps locations and services with geospatial data               | FastAPI, PostGIS, Ariadne, Docker          |
-| **[Reporting & Feedback Service](./reporting-feedback-service)** | Collects and manages user feedback and incident reports        | FastAPI, Ariadne, PostgreSQL               |
-| **[Telephony Integration Service](./telephony-integration-service)** | USSD & IVR interfaces for accessibility via basic mobile phones | FastAPI, Ariadne, Docker                   |
-| **[Common Utilities](./common)**                | Shared configs, utilities, and helper functions               | Python                                     |
+| **[API Gateway](https://github.com/MissTipo/EmpowerLink-Nexus/tree/main/services/api-gateway)**               | Central GraphQL gateway aggregating queries across services | FastAPI, Ariadne, Docker, Kubernetes       |
+| **[User Profile Service](https://github.com/MissTipo/EmpowerLink-Nexus/tree/main/services/user-profile-service)**     | Manages user profiles and authentication                     | FastAPI, Ariadne, SQLAlchemy, PostgreSQL   |
+| **[Resource Matching Service](https://github.com/MissTipo/EmpowerLink-Nexus/tree/main/services/resource-matching-service)** | AI-powered resource matching for users and NGOs               | FastAPI, Scikit-learn, Ariadne, PostgreSQL |
+| **[Inclusivity Index Service](https://github.com/MissTipo/EmpowerLink-Nexus/tree/main/services/inclusivity-index-service)** | Generates inclusivity and accessibility scores for regions    | FastAPI, Celery, Ariadne, PostgreSQL       |
+| **[Geospatial Mapping Service](https://github.com/MissTipo/EmpowerLink-Nexus/tree/main/services/geospatial-mapping-service)** | Maps locations and services with geospatial data               | FastAPI, PostGIS, Ariadne, Docker          |
+| **[Reporting & Feedback Service](https://github.com/MissTipo/EmpowerLink-Nexus/tree/main/services/reporting-feedback-service)** | Collects and manages user feedback and incident reports        | FastAPI, Ariadne, PostgreSQL               |
+| **[Telephony Integration Service](https://github.com/MissTipo/EmpowerLink-Nexus/tree/main/services/telephony-integration-service)** | USSD & IVR interfaces for accessibility via basic mobile phones | FastAPI, Ariadne, Docker                   |
 
 ---
 
