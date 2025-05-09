@@ -8,6 +8,7 @@ from ariadne.asgi import GraphQL
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 import httpx
+from httpx import Timeout
 
 app = FastAPI(title="EmpowerLink Nexus API Gateway")
 
