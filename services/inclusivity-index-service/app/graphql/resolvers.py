@@ -26,4 +26,4 @@ def resolve_get_metrics(_, info, regionId):
 def resolve_compute_index(_, info, regionId):
     from workers.tasks import compute_inclusivity_index
     async_result = compute_inclusivity_index.delay(regionId)
-    return {"value": async_result.get(timeout=60)}
+    return {"value": async_result.get(timeout=3600)}
