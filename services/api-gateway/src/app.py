@@ -8,7 +8,6 @@ from ariadne.asgi import GraphQL
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 import httpx
-from httpx import Timeout
 
 app = FastAPI(title="EmpowerLink Nexus API Gateway")
 
@@ -122,10 +121,8 @@ async def graphql_proxy(request: Request):
     if auth := request.headers.get("authorization"):
         headers["Authorization"] = auth
 
-    # Define the timeout with 30s connection, 120s read, and 30s write timeouts
-    timeout = Timeout(connect=30.0, read=120.0, write=30.0)
     # Proxy the entire GraphQL payload
-    async with httpx.AsyncClient(timeout=timeout, follow_redirects=True) as client:
+    async with httpx.AsyncClient(follow_redirects=True) as client:
         resp = await client.post(url, json=body, headers=headers, timeout=3600)
         try:
             data = resp.json()
