@@ -62,7 +62,7 @@ empowerlink-nexus/
 │   │   └── logging.yaml             # Logging configuration
 │   ├── tests/                       # Unit/integration tests for the gateway
 │   ├── Dockerfile                   # Containerization instructions
-│   ├── requirements.txt             # Dependencies (e.g., FastAPI, Apollo Server, etc.)
+│   ├── requirements.txt             # Dependencies
 │   └── README.md
 ├── user-profile-service/
 │   ├── app/
@@ -121,7 +121,7 @@ empowerlink-nexus/
 │   │   └── graphql/
 │   │       ├── schema.graphql
 │   │       └── resolvers.py
-│   ├── static/                      # Static assets (e.g., Leaflet.js maps, if applicable)
+│   ├── static/                      # Static assets
 │   ├── config/
 │   │   └── settings.py
 │   ├── tests/
@@ -174,7 +174,7 @@ empowerlink-nexus/
 │   ├── reporting-feedback-deployment.yaml
 │   ├── telephony-integration-deployment.yaml
 │   └── README.md
-└── README.md                        # Project overview, setup instructions, etc.
+└── README.md                        # This file
 
 ```
 
