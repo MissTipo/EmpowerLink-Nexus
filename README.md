@@ -1,6 +1,9 @@
 # EmpowerLink Nexus 🛠️🌍
 
-EmpowerLink Nexus is a modular, scalable backend platform designed to address social inclusion, accessibility, and resource distribution challenges through AI-driven services, geospatial mapping, feedback reporting, and telephony integrations. The system is built as a collection of independent microservices communicating via GraphQL APIs and REST, orchestrated through Kubernetes and containerized with Docker.
+EmpowerLink Nexus is a modular, scalable backend platform designed to address social inclusion, accessibility, and resource distribution challenges
+through AI-driven services, geospatial mapping, feedback reporting, and telephony integrations. A key focus is making web-based essential services
+accessible to digitally isolated populations, especially those without internet or smartphones through USSD and IVR technology.
+The system is built as a collection of independent microservices communicating via GraphQL APIs and REST, orchestrated through Kubernetes and containerized with Docker.
 
 ---
 
