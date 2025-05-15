@@ -58,7 +58,7 @@ services:
     depends_on:
       - empowerdb
     environment:
-      - DATABASE_URL=postgresql://empower:empowerpass@empowerdb:5432/empowerdb
+      - DATABASE_URL=${DATABASE_URL}
 
   geospatial-mapping-service:
     build:
