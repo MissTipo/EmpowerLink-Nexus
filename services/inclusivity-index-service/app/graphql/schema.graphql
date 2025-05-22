@@ -6,12 +6,20 @@ type InclusivityMetric {
     regionId: Int!
 }
 
+type TaskHandle {
+  taskId: String!
+  status: String!
+}
+
 type InclusivityIndex {
-    value: Float!
+    value: Float
+    status: String!
+    error: String
 }
 
 type Query {
     getMetrics(regionId: Int!): [InclusivityMetric!]!
-    computeInclusivityIndex(regionId: Int!): InclusivityIndex!
+    computeInclusivityIndex(regionId: Int!): TaskHandle!
+    getTaskStatus(taskId: String!): InclusivityIndex!
 }
 

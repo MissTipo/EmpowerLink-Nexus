@@ -2,6 +2,7 @@ from ariadne import QueryType
 from app.database import SessionLocal
 from app.models import InclusivityMetric
 from workers.tasks import compute_inclusivity_index
+from celery.result import AsyncResult
 
 query = QueryType()
 
@@ -24,6 +25,19 @@ def resolve_get_metrics(_, info, regionId):
     ]
 @query.field("computeInclusivityIndex")
 def resolve_compute_index(_, info, regionId):
-    from workers.tasks import compute_inclusivity_index
     async_result = compute_inclusivity_index.delay(regionId)
-    return {"value": async_result.get(timeout=36000)}
+    # return {"value": async_result.get(timeout=36000)}
+    return {"taskId": async_result.id, "status": async_result.status}
+
+@query.field("getTaskStatus")
+def resolve_task_status(_, info, taskId):
+    r = AsyncResult(taskId)
+    if r.ready():
+        # SUCCESS or FAILURE
+        return {
+            "status": r.status,
+            "value": r.result if r.status == "SUCCESS" else None,
+            "error": str(r.result) if r.status == "FAILURE" else None,
+        }
+    # still pending
+    return {"status": r.status, "value": None, "error": None}
