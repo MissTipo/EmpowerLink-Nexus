@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import { Chart, ArcElement, Tooltip } from 'chart.js';
-import { useQuery, useSubscription } from '@apollo/client';
-import { GET_INCLUSIVITY_INDEX, SUBSCRIBE_TO_INDEX } from '../../graphql/queries';
+import { useLazyQuery } from '@apollo/client';
+import { GET_INCLUSIVITY_INDEX, GET_TASK_STATUS } from '../../graphql/queries';
 import './InclusivityGauge.css';
 
 import {
@@ -14,9 +14,9 @@ import {
   Title,
   Legend,
 } from 'chart.js';
-import { Line } from 'react-chartjs-2';
+// import { Line } from 'react-chartjs-2';
 
-// Register only what you need:
+// Register only what's needed:
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -31,11 +31,49 @@ Chart.register(ArcElement, Tooltip);
 
 export default function InclusivityGauge({ regionId = 1 }) {
   // poll every 5 seconds (5000 ms) for the latest inclusivity index
-  const { data, loading, error } = useQuery(GET_INCLUSIVITY_INDEX, {
+  // const { data, loading, error } = useQuery(GET_INCLUSIVITY_INDEX, {
+  //   variables: { regionId },
+  //   fetchPolicy: "network-only",
+  //   pollInterval: 30 * 60 * 1000,
+  // });
+  const [taskId, setTaskId] = useState(null);
+  const [value, setValue] = useState(null);
+
+  const [startCompute] = useLazyQuery(GET_INCLUSIVITY_INDEX, {
     variables: { regionId },
     fetchPolicy: "network-only",
-    pollInterval: 30 * 60 * 1000,
+    onCompleted: (data) => {
+      setTaskId(data.computeInclusivityIndex.taskId);
+    },
   });
+
+  const [pollTaskStatus] = useLazyQuery(GET_TASK_STATUS, {
+    fetchPolicy: "network-only",
+    onCompleted: (data) => {
+      if (data.getTaskStatus.status === "SUCCESS") {
+        setValue(data.getTaskStatus.value);
+      } else if (data.getTaskStatus.status === "FAILURE") {
+        console.error("Task failed:", data.getTaskStatus.error);
+      }
+    },
+  });
+
+  useEffect(() => {
+    startCompute();
+  }, [startCompute, regionId]);
+
+  useEffect(() => {
+    if (!taskId) return;
+
+    const interval = setInterval(() => {
+      pollTaskStatus({ variables: { taskId } });
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [pollTaskStatus, taskId]);
+
+  if (value === null) return <div className="gauge-card">Loading…</div>;
+
 
   // Handle live updates via subscription
   // useSubscription(SUBSCRIBE_TO_INDEX, {
@@ -50,10 +88,10 @@ export default function InclusivityGauge({ regionId = 1 }) {
   //   },
   // });
 
-  if (loading) return <div className="gauge-card">Loading…</div>;
-  if (error) return <div className="gauge-card">Error!</div>;
-
-  const value = data.computeInclusivityIndex.value;
+  // if (loading) return <div className="gauge-card">Loading…</div>;
+  // if (error) return <div className="gauge-card">Error!</div>;
+  //
+  // const value = data.computeInclusivityIndex.value;
 
 
   const chartData = {

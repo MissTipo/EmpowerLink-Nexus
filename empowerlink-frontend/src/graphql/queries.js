@@ -5,10 +5,22 @@ import { gql } from "@apollo/client";
 export const GET_INCLUSIVITY_INDEX = gql`
   query computeInclusivityIndex($regionId: Int!) {
     computeInclusivityIndex(regionId: $regionId) {
-      value
+      taskId
+      status
     }
   }
 `;
+
+export const GET_TASK_STATUS = gql`
+  query GetTaskStatus($taskId: String!) {
+    getTaskStatus(taskId: $taskId) {
+      value
+      status
+      error
+    }
+  }
+`;
+
 
 // 2) Fetch trend over time
 export const GET_INCLUSIVITY_TREND = gql`
