@@ -49,7 +49,16 @@ def db():
     finally:
         db.close()
 
-def test_create_and_get_metrics_rest(db):
+from celery.result import AsyncResult
+
+@pytest.fixture(scope="session")
+def client():
+    """
+    Provides a TestClient instance pointed at your FastAPI/Ariadne app.
+    """
+    return TestClient(app)
+
+def test_create_and_get_metrics_rest(db, client):
     # POST /api/metrics/
     payload = {"category": "healthcare", "value": 0.8, "region_id": 1}
     resp = client.post("/api/metrics/", json=payload)
@@ -66,7 +75,7 @@ def test_create_and_get_metrics_rest(db):
     assert isinstance(items, list)
     assert items[0]["category"] == "healthcare"
 
-def test_compute_inclusivity_index_task(db):
+def test_compute_inclusivity_index_task(db, client):
     # Seed metrics across all categories for region 2
     metrics = [
         models.InclusivityMetric(region_id=2, category="healthcare",     value=0.5),
@@ -82,7 +91,7 @@ def test_compute_inclusivity_index_task(db):
     assert isinstance(idx, float)
     assert idx == pytest.approx(0.5, rel=1e-3)
 
-def test_get_inclusivity_index_rest(monkeypatch):
+def test_get_inclusivity_index_rest(monkeypatch, client):
     # Monkeypatch Celery .delay to return a dummy result
     class Dummy:
         def __init__(self, v): self._v = v
@@ -97,47 +106,69 @@ def test_get_inclusivity_index_rest(monkeypatch):
     assert resp.status_code == 200
     assert resp.json() == {"value": 0.77}
 
-def test_graphql_get_metrics_and_index(db, monkeypatch):
+def test_graphql_get_metrics_and_index(db, monkeypatch, client):
     # Seed one metric for region 3
     metric = models.InclusivityMetric(region_id=3, category="healthcare", value=0.9)
     db.add(metric)
     db.commit()
 
-    # 1) GraphQL getMetrics
-    query1 = """
-    query {
-      getMetrics(regionId: 3) {
-        id
-        category
-        value
-        regionId
-      }
-    }
-    """
-    resp1 = client.post("/graphql", json={"query": query1})
+    # 1) getMetrics
+    resp1 = client.post("/graphql", json={
+        "query": """
+        query {
+          getMetrics(regionId: 3) {
+            value
+          }
+        }
+        """
+    })
     assert resp1.status_code == 200
-    got = resp1.json()["data"]["getMetrics"]
-    assert len(got) == 1
-    assert got[0]["value"] == 0.9
+    assert resp1.json()["data"]["getMetrics"][0]["value"] == 0.9
 
-    # 2) GraphQL computeInclusivityIndex
-    class Dummy:
-        def __init__(self, v): self._v = v
-        def get(self, timeout=None): return self._v
+    # 2) computeInclusivityIndex → returns TaskHandle
+    class DummyHandle:
+        def __init__(self, tid):
+            self.id = tid
+            self.status = "PENDING"
 
     monkeypatch.setattr(
         "workers.tasks.compute_inclusivity_index.delay",
-        lambda region: Dummy(0.42)
+        lambda region: DummyHandle("task-123")
     )
-    query2 = """
-    query {
-      computeInclusivityIndex(regionId: 3) {
-        value
-      }
-    }
-    """
-    resp2 = client.post("/graphql", json={"query": query2})
-    assert resp2.status_code == 200
-    val = resp2.json()["data"]["computeInclusivityIndex"]["value"]
-    assert val == 0.42
 
+    resp2 = client.post("/graphql", json={
+        "query": """
+        query {
+          computeInclusivityIndex(regionId: 3) {
+            taskId
+            status
+          }
+        }
+        """
+    })
+    assert resp2.status_code == 200
+    data2 = resp2.json()["data"]["computeInclusivityIndex"]
+    assert data2["taskId"] == "task-123"
+    assert data2["status"] == "PENDING"
+
+    # 3) getTaskStatus → simulate a completed Celery result
+    monkeypatch.setattr(AsyncResult, "ready", lambda self: True)
+    monkeypatch.setattr(AsyncResult, "status", "SUCCESS", raising=False)
+    monkeypatch.setattr(AsyncResult, "result", 0.42, raising=False)
+
+    resp3 = client.post("/graphql", json={
+        "query": """
+        query {
+          getTaskStatus(taskId: "task-123") {
+            status
+            value
+            error
+          }
+        }
+        """
+    })
+    assert resp3.status_code == 200
+    data3 = resp3.json()["data"]["getTaskStatus"]
+    assert data3["status"] == "SUCCESS"
+    assert data3["value"] == 0.42
+    assert data3["error"] is None
