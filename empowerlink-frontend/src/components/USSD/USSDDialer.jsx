@@ -11,7 +11,7 @@ const USSDDialer = () => {
   const [response, setResponse] = useState("");
 
   const [fetchMenu] = useLazyQuery(GET_USSD_MENU, {
-    variables: { phoneNumber: "0712345678", text: fullText },
+    // variables: { phoneNumber: "0712345678", text: fullText },
     fetchPolicy: "no-cache",
     onCompleted: (data) => {
       let msg = data.getUSSDMenu.message || "";
@@ -25,13 +25,24 @@ const USSDDialer = () => {
     },
   });
 
+  const SERVICE_CODE = "*999#";
+  const PHONE_NUMBER = "0712345678";
+
   const handleDial = () => {
+     if (!fullText && entry === SERVICE_CODE) {
+        setFullText(entry);
+        // fetchMenu({ variables: { phoneNumber, input: entry } });
+        setFullText("");
+        setEntry("");
+        // trigger initial menu
+        return fetchMenu({ variables: { phoneNumber: PHONE_NUMBER, input: "" } });
+     }
     // Build the new fullText path
     const newFull = fullText ? `${fullText}*${entry}` : entry;
     setFullText(newFull);
       fetchMenu({
       variables: {
-        phoneNumber: "0712345678",
+        phoneNumber: PHONE_NUMBER,
         input: newFull
       }
     });
@@ -73,62 +84,3 @@ const USSDDialer = () => {
 
 export default USSDDialer;
 
-// const USSDDialer = () => {
-//   const [input, setInput] = useState("");
-//   const [response, setResponse] = useState("");
-//
-//   const [fetchMenu] = useLazyQuery(
-//     GET_USSD_MENU,
-//     {
-//       variables: { phoneNumber: "0712345678", input },
-//       fetchPolicy: "no-cache",
-//       onCompleted: (data) => {
-//         setResponse(data.getUSSDMenu.message);
-//       },
-//       onError: () => {
-//         setResponse("⚠️ Error contacting USSD service.");
-//       },
-//     }
-//   );
-//
-//   const handleDial = () => {
-//     fetchMenu();
-//   };
-//
-//
-//   const handleKeyPress = (value) => {
-//     setInput((prev) => prev + value);
-//   };
-//
-//   const handleClear = () => {
-//     setInput("");
-//     setResponse("");
-//   };
-//
-//   return (
-//     <div className="ussd-container">
-//       <div className="phone-screen">
-//         <div className="display">
-//           <p>{input || "*dial code here*"}</p>
-//         </div>
-//         <div className="keypad">
-//           {[1,2,3,4,5,6,7,8,9,"*",0,"#"].map((key) => (
-//             <button key={key} onClick={() => handleKeyPress(key)}>
-//               {key}
-//             </button>
-//           ))}
-//         </div>
-//         <div className="actions">
-//           <button className="dial-btn" onClick={handleDial}>Dial</button>
-//           <button className="clear-btn" onClick={handleClear}>Clear</button>
-//         </div>
-//         <div className="response">
-//           <p>{response}</p>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-//
-// export default USSDDialer;
-//
