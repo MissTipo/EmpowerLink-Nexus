@@ -51,7 +51,6 @@ SERVICE_MAP = {
     "getMatchingResources": "http://resource-matching-service:8004/graphql/",
     "getAvailableResources": "http://resource-matching-service:8004/graphql/",
     "requestResourceMatching": "http://resource-matching-service:8004/graphql/",
-    "requestResourceMatching": "http://resource-matching-service:8004/graphql/",
     "createResource": "http://resource-matching-service:8004/graphql/",
 
     # Analytics & Reporting
@@ -62,6 +61,7 @@ SERVICE_MAP = {
     # Inclusivity Index Service
     "computeInclusivityIndex": "http://inclusivity-index-service:8006/graphql/",
     "updateInclusivityIndex": "http://inclusivity-index-service:8006/graphql/",
+    "getTaskStatus": "http://inclusivity-index-service:8006/graphql/",
 
     # Geospatial Mapping Service
     "getResourceMap": "http://geospatial-mapping-service:8005/graphql/",
