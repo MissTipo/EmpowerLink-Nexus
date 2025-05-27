@@ -30,7 +30,7 @@ services:
     depends_on:
       - empowerdb
     environment:
-      - DATABASE_URL=${DATABASE_URL}
+      - DATABASE_URL=postgresql://empower:empowerpass@empowerdb:5432/empowerdb
 
   organization-profile:
     build:
@@ -58,7 +58,7 @@ services:
     depends_on:
       - empowerdb
     environment:
-      - DATABASE_URL=${DATABASE_URL}
+      - DATABASE_URL=postgresql://empower:empowerpass@empowerdb:5432/empowerdb
 
   geospatial-mapping-service:
     build:
@@ -70,7 +70,7 @@ services:
     depends_on:
       - empowerdb
     environment:
-      - DATABASE_URL=${DATABASE_URL}
+      - DATABASE_URL=postgresql://empower:empowerpass@empowerdb:5432/empowerdb
 
   inclusivity-index-service:
     build:
@@ -83,7 +83,7 @@ services:
       - empowerdb
       - redis
     environment:
-      - DATABASE_URL=${DATABASE_URL}
+      - DATABASE_URL=postgresql://empower:empowerpass@empowerdb:5432/empowerdb
       - CELERY_BROKER_URL=redis://redis:6379/0
 
     labels:
@@ -98,7 +98,7 @@ services:
       - empowerdb
       - redis
     environment:
-      - DATABASE_URL=${DATABASE_URL}
+      - DATABASE_URL=postgresql://empower:empowerpass@empowerdb:5432/empowerdb
       - CELERY_BROKER_URL=redis://redis:6379/0
 
     labels:
