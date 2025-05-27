@@ -177,4 +177,13 @@ empowerlink-nexus/
 └── README.md                        # This file
 
 ```
+---
+
+## 📞 How to Use the Mock Mobile Screen Demo
+
+On the demo screen, dial:
+
+`*999#`
+
+Follow the on-screen USSD menu prompts and make your selection by entering the corresponding number.
 
