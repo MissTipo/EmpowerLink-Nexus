@@ -181,7 +181,7 @@ empowerlink-nexus/
 
 ## 📞 How to Use the Mock Mobile Screen Demo
 
-On the demo screen, dial:
+On the [EmpowerLink Nexus](https://empower-link-nexus.vercel.app/) demo screen, dial:
 
 `*999#`
 
