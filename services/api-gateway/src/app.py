@@ -60,7 +60,7 @@ SERVICE_MAP = {
 
     # Inclusivity Index Service
     "computeInclusivityIndex": "http://inclusivity-index-service:8006/graphql/",
-    "updateInclusivityIndex": "http://inclusivity-index-service:8006/graphql/",
+    "getInclusivityTrend": "http://inclusivity-index-service:8006/graphql/",
     "getTaskStatus": "http://inclusivity-index-service:8006/graphql/",
 
     # Geospatial Mapping Service
@@ -123,7 +123,7 @@ async def graphql_proxy(request: Request):
 
     # Proxy the entire GraphQL payload
     async with httpx.AsyncClient(follow_redirects=True) as client:
-        resp = await client.post(url, json=body, headers=headers, timeout=3600)
+        resp = await client.post(url, json=body, headers=headers, timeout=10)
         try:
             data = resp.json()
         except Exception:
