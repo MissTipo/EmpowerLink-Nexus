@@ -25,6 +25,7 @@ schema_dir = os.path.join(os.path.dirname(__file__), "graphql")
 type_defs   = load_schema_from_path(schema_dir)
 schema      = make_executable_schema(type_defs, query)
 app.mount("/graphql", GraphQL(schema, debug=True))
+app.mount("/graphql", GraphQL(schema, debug=True))
 
 # create tables
 Base.metadata.create_all(bind=engine)
