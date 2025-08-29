@@ -24,9 +24,11 @@ export const GET_TASK_STATUS = gql`
 
 // 2) Fetch trend over time
 export const GET_INCLUSIVITY_TREND = gql`
-  query GetInclusivityIndex($regionId: Int!) {
-    computeInclusivityIndex(regionId: $regionId) {
+  query GetInclusivityTrend($regionId: Int!) {
+    getInclusivityTrend(regionId: $regionId) {
+      id
       value
+      createdAt
     }
   }
 `;
