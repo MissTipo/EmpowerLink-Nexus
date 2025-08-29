@@ -41,3 +41,14 @@ def resolve_task_status(_, info, taskId):
         }
     # still pending
     return {"status": r.status, "value": None, "error": None}
+
+@query.field("getInclusivityTrend")
+def resolve_get_inclusivity_trend(*_, regionId):
+    db = SessionLocal()
+    metrics = (
+        db.query(InclusivityMetric)
+        .filter(InclusivityMetric.region_id == regionId)
+        .order_by(InclusivityMetric.created_at.asc())
+        .all()
+    )
+    return metrics

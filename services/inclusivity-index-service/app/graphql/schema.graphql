@@ -21,5 +21,6 @@ type Query {
     getMetrics(regionId: Int!): [InclusivityMetric!]!
     computeInclusivityIndex(regionId: Int!): TaskHandle!
     getTaskStatus(taskId: String!): InclusivityIndex!
+    getInclusivityTrend(regionId: Int!): [InclusivityMetric!]!
 }
 
