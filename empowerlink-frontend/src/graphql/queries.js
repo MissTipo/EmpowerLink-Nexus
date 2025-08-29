@@ -28,7 +28,7 @@ export const GET_INCLUSIVITY_TREND = gql`
     getInclusivityTrend(regionId: $regionId) {
       id
       value
-      createdAt
+      timestamp
     }
   }
 `;
