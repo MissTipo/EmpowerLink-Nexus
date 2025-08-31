@@ -15,7 +15,7 @@ import {
 } from 'chart.js';
 import { GET_INCLUSIVITY_TREND } from '../../graphql/queries';
 
-// Register only what you need:
+// Register only what's needed:
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -26,6 +26,15 @@ ChartJS.register(
   Legend
 );
 
+function safeParseDate(s) {
+  if (!s) return null;
+  let t = s.replace(' ', 'T');                     // in case a space sneaks in
+  t = t.replace(/(\.\d{3})\d+/, '$1');             // trim microseconds to milliseconds
+  if (!/[zZ]|[+\-]\d{2}:\d{2}$/.test(t)) t += 'Z'; // add Z if no timezone
+  const d = new Date(t);
+  return Number.isNaN(d.getTime()) ? null : d;
+}
+
 export default function InclusivityTrendLine({ regionId = 1 }) {
   const { data, loading, error } = useQuery(GET_INCLUSIVITY_TREND, {
     variables: { regionId },
@@ -35,11 +44,16 @@ export default function InclusivityTrendLine({ regionId = 1 }) {
   if (loading) return <div className="chart-card">Loading trend…</div>;
   if (error)   return <div className="chart-card">Error loading trend</div>;
 
-  const trend = data.getInclusivityTrend;
+  const trend = data?.getInclusivityTrend ?? [];
+  const dates = trend.map(pt => safeParseDate(pt.timestamp));
 
-  const labels = trend.map(pt =>
-    new Date(pt.createdAt).toLocaleDateString([], { month: "short", day: "numeric" })
+  const labels = dates.map(d =>
+    d ? d.toLocaleDateString([], { month: 'short', day: 'numeric' }) : '—'
   );
+
+  // const labels = trend.map(pt =>
+  //   new Date(pt.createdAt).toLocaleDateString([], { month: "short", day: "numeric" })
+  // );
   const values = trend.map(pt => pt.value);
 
   const chartData = {
