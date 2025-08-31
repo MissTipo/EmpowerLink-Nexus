@@ -48,7 +48,7 @@ def resolve_get_inclusivity_trend(*_, regionId):
     metrics = (
         db.query(InclusivityMetric)
         .filter(InclusivityMetric.region_id == regionId)
-        .order_by(InclusivityMetric.created_at.asc())
+        .order_by(InclusivityMetric.timestamp.asc())
         .all()
     )
     return metrics
