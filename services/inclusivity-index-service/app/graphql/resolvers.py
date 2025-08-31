@@ -51,4 +51,11 @@ def resolve_get_inclusivity_trend(*_, regionId):
         .order_by(InclusivityMetric.timestamp.asc())
         .all()
     )
-    return metrics
+    return [
+        {
+            "id": m.id,
+            "value": m.value,
+            "timestamp": m.timestamp.isoformat()
+        }
+        for m in metrics
+    ]
