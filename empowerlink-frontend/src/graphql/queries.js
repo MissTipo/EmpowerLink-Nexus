@@ -21,17 +21,27 @@ export const GET_TASK_STATUS = gql`
   }
 `;
 
-
 // 2) Fetch trend over time
 export const GET_INCLUSIVITY_TREND = gql`
   query GetInclusivityTrend($regionId: Int!) {
-    getInclusivityTrend(regionId: $regionId) {
+    getInclusivityIndex(regionId: $regionId) {
       id
       value
       timestamp
     }
   }
 `;
+
+// // 2) Fetch trend over time
+// export const GET_INCLUSIVITY_TREND = gql`
+//   query GetInclusivityTrend($regionId: Int!) {
+//     getInclusivityTrend(regionId: $regionId) {
+//       id
+//       value
+//       timestamp
+//     }
+//   }
+// `;
 
 // 3) Fetch resource matches
 export const GET_RESOURCE_MATCHES = gql`
