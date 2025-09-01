@@ -13,7 +13,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { GET_INCLUSIVITY_INDEX } from '../../graphql/queries';
+import { GET_INCLUSIVITY_INDEX, GET_TASK_STATUS } from '../../graphql/queries';
 
 // Register only what you need:
 ChartJS.register(
@@ -26,52 +26,68 @@ ChartJS.register(
   Legend
 );
 
-export default function InclusivityTrendLine({regionId = 1}, pollInterval = 60000) {
+export default function InclusivityTrendLine({regionId = 1, pollInterval = 60000}) {
   const client = useApolloClient();
   const [history, setHistory] = useState([]);
 
   useEffect(() => {
-    // helper to fetch one datapoint
+    let pollTimer;
+    let statusTimeout
+    let isMounted = true;
+
     const fetchPoint = async () => {
       try {
+        // Kick off computation -> returns taskId
         const { data } = await client.query({
           query: GET_INCLUSIVITY_INDEX,
           variables: { regionId },
           fetchPolicy: "network-only",
         });
-        const timestamp = new Date();
-        setHistory(h => [
-          ...h,
-          {
-            time: timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-            value: data.computeInclusivityIndex.value,
-          },
-        ]);
+
+        const taskId = data.computeInclusivityIndex.taskId;
+
+        // Poll task status until value is ready
+        const checkStatus = async () => {
+          if (!isMounted) return;
+          const res = await client.query({
+            query: GET_TASK_STATUS,
+            variables: { taskId },
+            fetchPolicy: 'network-only',
+          });
+          const task = res.data.getTaskStatus;
+          if (task.status === "SUCCESS" && task.value !== null) {
+            const timestamp = new Date();
+            setHistory(h => [
+              ...h.slice(-49),
+              {
+                time: timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+                value: task.value,
+              },
+            ]);
+          } else if (task.status === "PENDING" || task.status === "STARTED") {
+            // keep polling until it's done
+            statusTimeout = setTimeout(checkStatus, 2000);
+          } else if (task.status === "FAILURE") {
+            console.error("Task failed:", task.error);
+          }
+        };
+        checkStatus();
       } catch (err) {
         console.error("failed to fetch index:", err);
       }
     };
 
-    // initial fetch, then poll
+    // initial fetch, then schedule periodic re-computation
     fetchPoint();
-    const iv = setInterval(fetchPoint, pollInterval);
-    return () => clearInterval(iv);
+    pollTimer = setInterval(fetchPoint, pollInterval);
+    return () => {
+      isMounted = false;
+      clearTimeout(statusTimeout);
+      clearInterval(pollTimer);
+    };
   }, [client, regionId, pollInterval]);
 
-  // const { data, loading, error } = useQuery(GET_INCLUSIVITY_TREND, {
-  //   variables: { regionId },
-  //   fetchPolicy: 'network-only',
-  // });
-  //
-  // if (loading) return <div className="chart-card">Loading trend…</div>;
-  // if (error)   return <div className="chart-card">Error loading trend</div>;
-  //
-  // // data.getInclusivityTrend is an array of { month, value }
-  // const trend = data.getInclusivityTrend;
-  // const labels = trend.map((pt) => pt.month);
-  // const values = trend.map((pt) => pt.value);
-
-
+  
   const chartData = {
     labels: history.map((pt) => pt.time),
     datasets: [
@@ -104,4 +120,3 @@ export default function InclusivityTrendLine({regionId = 1}, pollInterval = 6000
     </div>
   );
 }
-
