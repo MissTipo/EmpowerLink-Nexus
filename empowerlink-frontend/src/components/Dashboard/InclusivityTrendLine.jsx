@@ -45,6 +45,10 @@ export default function InclusivityTrendLine({regionId = 1, pollInterval = 60000
         });
 
         const taskId = data.computeInclusivityIndex.taskId;
+        if (!taskId) {
+          console.error("No taskId returned from computeInclusivityIndex");
+          return;
+        }
 
         // Poll task status until value is ready
         const checkStatus = async () => {
