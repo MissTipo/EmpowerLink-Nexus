@@ -29,7 +29,7 @@ class NormalizeHyphensMiddleware(BaseHTTPMiddleware):
 
 app = FastAPI(title="Telephony Integration Service")
 
-# Middleware to normalize hyphens in headers (insert before CORS or any other)
+# Normalize hyphens in headers (Note: insert before CORS or any other)
 app.add_middleware(NormalizeHyphensMiddleware)
 
 # Global CORS settings

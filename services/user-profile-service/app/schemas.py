@@ -1,4 +1,3 @@
-# user-profile-service/app/schemas.py
 from pydantic import BaseModel, ConfigDict
 from typing import Optional
 from datetime import datetime
@@ -25,6 +24,4 @@ class UserProfileResponse(UserProfileBase):
 
     model_config = ConfigDict(from_attributes=True)
 
-    # class Config:
-    #     orm_mode = True
 

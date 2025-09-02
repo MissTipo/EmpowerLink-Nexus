@@ -1,5 +1,3 @@
-# user-profile-service/app/graphql/schema.graphql
-
 schema {
   query: Query
   mutation: Mutation

@@ -1,4 +1,3 @@
-# app/auth.py
 from datetime import datetime, timedelta
 import jwt
 from passlib.context import CryptContext

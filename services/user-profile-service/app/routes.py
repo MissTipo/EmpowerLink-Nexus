@@ -1,16 +1,14 @@
-# user-profile-service/app/routes.py
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from app.schemas import UserProfileCreate, UserProfileResponse, UserProfileUpdate
 from app import models
-# from config.settings import get_db
 from app.database import get_db
 
 router = APIRouter()
 
 @router.post("/", response_model=UserProfileResponse)
 def create_user_profile(profile: UserProfileCreate, db: Session = Depends(get_db)):
-    # For now, a simple in-memory placeholder (later use SQLAlchemy session)
+    # Simple in-memory placeholder for now
     db_user = models.UserProfile(**profile.model_dump())
     db.add(db_user)
     db.commit()

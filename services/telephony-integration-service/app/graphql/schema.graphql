@@ -1,17 +1,13 @@
-# telephony-integration-service/app/graphql/schema.graphql
-
 schema {
   query: Query
   mutation: Mutation
 }
 
-# A simple wrapper for the USSD response
 type USSDResponse {
   message: String!
 }
 
 type Query {
-  # phoneNumber and input come from the app
   getUSSDMenu(phoneNumber: String!, input: String!): USSDResponse!
   dummy: String
 }

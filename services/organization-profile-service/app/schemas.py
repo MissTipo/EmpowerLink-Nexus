@@ -1,4 +1,3 @@
-# app/schemas.py
 from pydantic import BaseModel, EmailStr
 from typing import Optional
 from datetime import datetime
@@ -11,7 +10,7 @@ class OrganizationBase(BaseModel):
     role: Optional[str] = "Organization"  # Default role
 
 class OrganizationCreate(OrganizationBase):
-    password: str  # Plain text password to be hashed
+    password: str
 
 class OrganizationUpdate(BaseModel):
     name: Optional[str] = None

@@ -31,11 +31,6 @@ Chart.register(ArcElement, Tooltip);
 
 export default function InclusivityGauge({ regionId = 1 }) {
   // poll every 5 seconds (5000 ms) for the latest inclusivity index
-  // const { data, loading, error } = useQuery(GET_INCLUSIVITY_INDEX, {
-  //   variables: { regionId },
-  //   fetchPolicy: "network-only",
-  //   pollInterval: 30 * 60 * 1000,
-  // });
   const [taskId, setTaskId] = useState(null);
   const [value, setValue] = useState(null);
 
@@ -73,26 +68,6 @@ export default function InclusivityGauge({ regionId = 1 }) {
   }, [pollTaskStatus, taskId]);
 
   if (value === null) return <div className="gauge-card">Loading…</div>;
-
-
-  // Handle live updates via subscription
-  // useSubscription(SUBSCRIBE_TO_INDEX, {
-  //   variables: { regionId },
-  //   onSubscriptionData: ({ subscriptionData, client }) => {
-  //     const newValue = subscriptionData.data.indexUpdated.current;
-  //     client.writeQuery({
-  //       query: GET_INCLUSIVITY_INDEX,
-  //       variables: { regionId },
-  //       data: { computeInclusivityIndex: { value: newValue } },
-  //     });
-  //   },
-  // });
-
-  // if (loading) return <div className="gauge-card">Loading…</div>;
-  // if (error) return <div className="gauge-card">Error!</div>;
-  //
-  // const value = data.computeInclusivityIndex.value;
-
 
   const chartData = {
     datasets: [

@@ -5,10 +5,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from ariadne import load_schema_from_path, make_executable_schema, QueryType, MutationType
 from ariadne.asgi import GraphQL
 
-# Import REST routes (if used)
 from app.routes import router as user_router
 
-# Import GraphQL resolvers
 from app.graphql.resolvers import (
     resolve_getUserProfile,
     resolve_createUserProfile,
@@ -23,10 +21,8 @@ from app.graphql.resolvers import (
 from app.database import Base, engine
 from app.models import UserProfile
 
-# Initialize FastAPI app
 app = FastAPI(title="User Profile Service")
 
-# Optional: add CORS settings if this service will be called from other origins
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -35,14 +31,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Mount REST routes (if you plan on using REST endpoints as well)
 app.include_router(user_router, prefix="/api/users")
 
 # Create GraphQL Query and Mutation types
 query = QueryType()
 mutation = MutationType()
 
-# Map GraphQL resolvers (example for user profiles)
+# Map GraphQL resolvers
 query.set_field("getUserProfile", resolve_getUserProfile)
 mutation.set_field("createUserProfile", resolve_createUserProfile)
 mutation.set_field("updateUserProfile", resolve_updateUserProfile)

@@ -12,7 +12,6 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 
-# Dependency for FastAPI routes/resolvers
 def get_db():
     db = SessionLocal()
     try:

@@ -1,4 +1,3 @@
-# Use an official Python runtime as a parent image
 FROM python:3.10-slim
 
 # Set the environment variables
@@ -22,7 +21,6 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 # Copy the application code
 COPY src/ .
 
-# Set PYTHONPATH to include /app so relative imports are resolved
 ENV PYTHONPATH=/app/src
 
 # Expose the port FastAPI will run on

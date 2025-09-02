@@ -11,16 +11,6 @@ import httpx
 
 app = FastAPI(title="EmpowerLink Nexus API Gateway")
 
-# CORS settings: allow from all origins or restrict as needed
-# origins = ["*"]
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=origins,
-#     allow_credentials=True,
-#     allow_methods=["*"],
-#     allow_headers=["*"],
-# )
-
 # Map GraphQL operation names to service endpoints
 SERVICE_MAP = {
     # User Profile Service
@@ -44,9 +34,7 @@ SERVICE_MAP = {
     # Telephony Integration Service
     "logIVRInteraction": "http://telephony-integration:8003/graphql/",
     "getUSSDMenu": "http://telephony-integration:8003/graphql/",
-    # "dummy": "http://telephony-integration:8003/graphql/",
-    # "dummyMutation": "http://telephony-integration:8003/graphql/",
-
+    
     # Resource Matching Service
     "getMatchingResources": "http://resource-matching-service:8004/graphql/",
     "getAvailableResources": "http://resource-matching-service:8004/graphql/",
@@ -76,7 +64,6 @@ SERVICE_MAP = {
 @app.post("/graphql")
 @app.post("/graphql/")
 async def graphql_proxy(request: Request):
-    # 1) Read the full JSON payload
     try:
         body = await request.json()
     except Exception as e:
@@ -85,16 +72,9 @@ async def graphql_proxy(request: Request):
             status_code=400
         )
 
-    # 2) Log it for debugging (will show up in your pod logs)
-    print("=== Incoming GraphQL Payload ===")
-    print(body)
-    print("================================")
-
     query = body.get("query", "")
 
-    # 3) Pull out the very first field in the `{ ... }` selection set:
     m = re.search(r"\{\s*([A-Za-z0-9_]+)", query)
-    # m = re.search(r"(?:query|mutation)?\s*[A-Za-z0-9_]*\s*\{\s*([A-Za-z0-9_]+)", query)
 
     if not m:
         return JSONResponse(
@@ -104,7 +84,6 @@ async def graphql_proxy(request: Request):
     field = m.group(1)
     print(f"[Gateway] extracted field → {field!r}")
 
-    # 4) Look up which service to call
     url = SERVICE_MAP.get(field)
     print(f"[Gateway] mapped URL     → {url!r}")
     if not url:
@@ -114,7 +93,6 @@ async def graphql_proxy(request: Request):
         )
     print(f"[Gateway] mapped URL     → {url!r}")
 
-    # 5) Forward the *entire* JSON body, including headers like Content-Type / Authorization
     headers = {
         "Content-Type": request.headers.get("content-type", "application/json"),
     }

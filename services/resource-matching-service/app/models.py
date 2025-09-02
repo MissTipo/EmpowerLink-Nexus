@@ -1,4 +1,3 @@
-# app/models.py
 import uuid
 import datetime
 from sqlalchemy.dialects.postgresql import UUID
@@ -12,7 +11,7 @@ class Resource(Base):
     resource_id = Column(
       UUID(as_uuid=True),
       primary_key=True,
-      default=uuid.uuid4,      # <— auto‐generate
+      default=uuid.uuid4,
       nullable=False,
       unique=True
     )
@@ -27,9 +26,7 @@ class Resource(Base):
     organization_id = Column(String, nullable=False)
 
 
-# Analytics tables
 
-# 1. Region
 class Region(Base):
     __tablename__ = "regions"
 
@@ -37,10 +34,7 @@ class Region(Base):
     region_name      = Column(String, nullable=False, unique=True)
     population_in_need = Column(Integer, nullable=False)
 
-    # optional backref:
-    # resources = relationship("Resource", back_populates="region")
 
-# 3. DemandLog
 class DemandLog(Base):
     __tablename__ = "demand_logs"
 
@@ -55,7 +49,6 @@ class DemandLog(Base):
     )
 
 
-# 4. MatchLog
 class MatchLog(Base):
     __tablename__ = "match_logs"
 

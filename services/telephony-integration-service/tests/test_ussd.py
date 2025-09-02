@@ -37,7 +37,7 @@ def test_language_selection_and_registration_flow():
     session_id = "sess2"
     phone = "+254712345678"
     
-    # Step 0: Initial empty text -> language selection
+    # Initial empty text -> language selection
     r = client.post("/ussd", data={
         "sessionId": session_id,
         "serviceCode": "*999#",
@@ -46,7 +46,7 @@ def test_language_selection_and_registration_flow():
     })
     assert "Please select your language" in r.text
     
-    # Step 1: User selects a language ("1" for English)
+    # User selects a language ("1" for English)
     r = client.post("/ussd", data={
         "sessionId": session_id,
         "serviceCode": "*999#",
@@ -56,28 +56,25 @@ def test_language_selection_and_registration_flow():
     # Should set language and prompt for name.
     assert "enter your name" in r.text.lower()
     
-    # Step 2: User enters name ("Alice") - simulate input "1*Alice"
+    # User enters name ("Alice") - simulate input "1*Alice"
     r = client.post("/ussd", data={
         "sessionId": session_id,
         "serviceCode": "*999#",
         "phoneNumber": phone,
         "text": "1*Alice"
     })
-    # Prompt should now ask for location.
     assert "enter your location" in r.text.lower()
     
-    # Step 3: User enters location ("Nairobi") - simulate input "1*Alice*Nairobi"
     r = client.post("/ussd", data={
         "sessionId": session_id,
         "serviceCode": "*999#",
         "phoneNumber": phone,
         "text": "1*Alice*Nairobi"
     })
-    # Now expect registration success message and service menu.
     assert "registration successful" in r.text.lower()
     assert "service menu" in r.text.lower()
     
-    # Verify that the user is marked as registered in our demo store.
+    # Verify that the user is marked as registered in the demo store.
     assert phone in REGISTERED_USERS
     assert REGISTERED_USERS[phone]["name"] == "Alice"
     assert REGISTERED_USERS[phone]["location"] == "Nairobi"
@@ -95,34 +92,31 @@ def test_registration_with_no_name():
     })
     assert "please select your language" in r.text.lower()
     
-    # Step 1: Select language "2" (Kiswahili)
     r = client.post("/ussd", data={
         "sessionId": session_id,
         "serviceCode": "*999#",
         "phoneNumber": phone,
         "text": "2"
     })
-    # Should prompt for name
     assert "enter your name" in r.text.lower()
     
-    # Step 2: User enters "0" to skip name.
+    # If user enters "0" to skip name.
     r = client.post("/ussd", data={
         "sessionId": session_id,
         "serviceCode": "*999#",
         "phoneNumber": phone,
         "text": "2*0"
     })
-    # Should now ask for location.
+    # Should prompt for location.
     assert "enter your location" in r.text.lower()
     
-    # Step 3: User enters location "Mombasa"
     r = client.post("/ussd", data={
         "sessionId": session_id,
         "serviceCode": "*999#",
         "phoneNumber": phone,
         "text": "2*0*Mombasa"
     })
-    # Should complete registration and display service menu.
+    # Complete registration and display service menu.
     assert "registration successful" in r.text.lower()
     
     # Check that a default name was assigned.
@@ -137,10 +131,13 @@ def test_service_menu_selection():
     phone = "+254712345680"
     REGISTERED_USERS[phone] = {"name": "Bob", "location": "Nairobi", "language": "English"}
     
-    # Simulate a USSD request where user already registered and now selects a service.
-    # The "text" could be constructed to have a fourth step indicating service selection.
-    # Here, we simulate "1" at step 1 followed by three steps already done and then a selection.
-    # For simplicity, we provide a text value with 4 parts.
+    """
+    Simulate a USSD request where user already registered and now selects a service.
+    The "text" could be constructed to have a fourth step indicating service selection.
+    Here, we simulate "1" at step 1 followed by three steps already done and then a selection.
+    For simplicity, we provide a text value with 4 parts.
+    """
+
     r = client.post("/ussd", data={
         "sessionId": session_id,
         "serviceCode": "*999#",
@@ -198,35 +195,23 @@ def test_service_menu_after_registration():
 
     REGISTERED_USERS[phone] = {"name": "Zoe", "location": "Nairobi", "language": "English"}
 
-    # Simulate starting the session
+    # Starting the session
     client.post("/ussd", data={
         "sessionId": session_id, "serviceCode": "*999#", "phoneNumber": phone, "text": ""
     })
 
-    # Simulate selecting language
+    # Selecting language
     client.post("/ussd", data={
         "sessionId": session_id, "serviceCode": "*999#", "phoneNumber": phone, "text": "1"
     })
 
-    # Simulate selecting service option 2
+    # Selecting service option 2
     r = client.post("/ussd", data={
         "sessionId": session_id, "serviceCode": "*999#", "phoneNumber": phone, "text": "1*2"
     })
 
     assert r.text.startswith("END")
     assert "Police & Justice" in r.text
-
-# def test_service_menu_after_registration():
-#     """After full registration, selecting service '2' returns Police & Justice."""
-#     phone = "+300"
-#     # pre-register ourselves
-#     REGISTERED_USERS[phone] = {"name":"Zoe","location":"Nairobi","language":"English"}
-#     # simulate fourth input selecting option 2
-#     r = client.post("/ussd", data={
-#         "sessionId":"s3","serviceCode":"*999#","phoneNumber":phone,"text":"1*Zoe*Nairobi*2"
-#     })
-#     assert r.text.startswith("END")
-#     assert "Justice" in r.text or "Police" in r.text
 
 def test_dummy_graphql_query_and_mutation():
     """Exercise the GraphQL (/graphql) dummy resolvers."""

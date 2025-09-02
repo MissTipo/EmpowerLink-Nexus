@@ -1,5 +1,3 @@
-# tests/test_auth.py
-
 import pytest
 
 def execute_graphql_query(client, query: str, variables: dict = None):
@@ -11,7 +9,6 @@ def execute_graphql_query(client, query: str, variables: dict = None):
     return response.json()["data"]
 
 def test_signup_and_signin(client):
-    # Test GraphQL mutation to sign up an organization
     signup_mutation = """
     mutation SignupOrganization($input: OrganizationInput!) {
       signupOrganization(input: $input) {
@@ -36,7 +33,6 @@ def test_signup_and_signin(client):
     assert org is not None, "Signup failed, returned None"
     assert org["email"] == "contact@empowerorg.com", f"Unexpected email: {org.get('email')}"
 
-    # Test GraphQL mutation for sign-in
     signin_mutation = """
     mutation SigninOrganization($email: String!, $password: String!) {
       signinOrganization(email: $email, password: $password) {

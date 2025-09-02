@@ -10,7 +10,6 @@ from app.database import Base, engine
 
 app = FastAPI(title="Resource Matching Service")
 
-# CORS configuration
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -18,7 +17,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include REST endpoints
 app.include_router(rest_router)
 
 # Setup GraphQL

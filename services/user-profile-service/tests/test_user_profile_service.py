@@ -1,8 +1,7 @@
-# tests/test_user_profile_service.py
 import os
 
 # Use SQLite in-memory database for testing
-os.environ["DATABASE_URL"] = "sqlite:///./test.db"  # or "sqlite:///:memory:" for true in-memory
+os.environ["DATABASE_URL"] = "sqlite:///./test.db"
 
 import pytest
 from fastapi.testclient import TestClient
@@ -97,7 +96,7 @@ def test_update_user_profile_rest(client):
 
     # Update the user's location
     update_payload = {
-        "name": "Charlie",  # Keeping same name
+        "name": "Charlie",
         "gender": "Male",
         "age": 28,
         "location": "Eldoret"
@@ -197,7 +196,7 @@ def test_update_user_profile_graphql(client):
     update_variables = {
         "id": user_id,
         "input": {
-            "phone_number": "0700000005",  # must still be provided if part of input type
+            "phone_number": "0700000005",
             "name": "Evelyn",
             "gender": "Female",
             "age": 35,
