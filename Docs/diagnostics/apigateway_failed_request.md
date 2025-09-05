@@ -46,8 +46,8 @@
 
 - If ingress misroutes, adjust the ingress rule.
 
-```
 **TLDR**:
+```
 Start by reproducing the error, then check the gateway logs to see if the request arrives.
 Next, validate the service map and ingress config, then try hitting the service directly
 to separate gateway vs service bugs. Finally, check Kong and Kubernetes events for misrouting or
