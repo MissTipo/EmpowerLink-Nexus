@@ -1,6 +1,6 @@
 **Step 1 – Reproduce and Scope the Issue**
 
-- Try the failing request yourself with curl or Postman.
+- Try the failing request locally with curl or Postman.
 
 - Confirm the exact error: is it a 4xx (bad request), 5xx (server issue), or a timeout?
 
