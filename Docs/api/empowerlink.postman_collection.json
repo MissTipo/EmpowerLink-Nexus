@@ -1,0 +1,240 @@
+{
+  "info": {
+    "name": "Empowerlink GraphQL APIs",
+    "_postman_id": "empowerlink-apis",
+    "description": "All queries & mutations for Empowerlink microservices",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "User Profile Service",
+      "item": [
+        {
+          "name": "Create User Profile",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "https://159.203.54.10.nip.io/graphql", "protocol": "http", "host": ["localhost"], "port": "8000", "path": ["graphql"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"query\":\"mutation { createUserProfile(input: { phone_number: \\\"123456789\\\", name: \\\"Alice\\\", gender: \\\"F\\\", age: 24, location: \\\"Nairobi\\\" }) { id name phone_number } }\"}"
+            }
+          }
+        },
+        {
+          "name": "Update User Profile by ID",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "https://159.203.54.10.nip.io/graphql" },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"query\":\"mutation { updateUserProfile(id: 1, input: { name: \\\"Alice Updated\\\", location: \\\"Mombasa\\\" }) { id name location } }\"}"
+            }
+          }
+        },
+        {
+          "name": "Get User by Phone Number",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "https://159.203.54.10.nip.io/graphql" },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"query\":\"{ getUserProfileByPhoneNumber(phone_number:\\\"123456789\\\") { id name age location } }\"}"
+            }
+          }
+        },
+        {
+          "name": "List All User Profiles",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "https://159.203.54.10.nip.io/graphql" },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"query\":\"{ allUserProfiles { id name phone_number } }\"}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Organization Profile Service",
+      "item": [
+        {
+          "name": "Signup Organization",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "https://159.203.54.10.nip.io/graphql" },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"query\":\"mutation { signupOrganization(input: { name: \\\"OrgOne\\\", email: \\\"org@ex.com\\\", phone: \\\"0700000000\\\", location: \\\"Kisumu\\\", role: \\\"NGO\\\", password: \\\"secure123\\\" }) { id name email } }\"}"
+            }
+          }
+        },
+        {
+          "name": "Signin Organization",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "https://159.203.54.10.nip.io/graphql" },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"query\":\"mutation { signinOrganization(email: \\\"org@ex.com\\\", password: \\\"secure123\\\") { access_token token_type } }\"}"
+            }
+          }
+        },
+        {
+          "name": "Update Organization Profile",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "https://159.203.54.10.nip.io/graphql" },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"query\":\"mutation { updateOrganizationProfile(id: 1, input: { name: \\\"OrgOne Updated\\\", location: \\\"Nairobi\\\" }) { id name location } }\"}"
+            }
+          }
+        },
+        {
+          "name": "List Organizations by Location",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "https://159.203.54.10.nip.io/graphql" },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"query\":\"{ listOrganizations(location:\\\"Nairobi\\\") { id name role location } }\"}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Resource Matching Service",
+      "item": [
+        {
+          "name": "Create Resource",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "https://159.203.54.10.nip.io/graphql" },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"query\":\"mutation { createResource(organizationId: \\\"1\\\", input: { latitude: -1.286, longitude: 36.817, cost_level: 1, languages_supported: [\\\"en\\\",\\\"sw\\\"], capacity: 100, tags: { facility: \\\"clinic\\\" } }) { resource_id latitude longitude } }\"}"
+            }
+          }
+        },
+        {
+          "name": "Get Matching Resources",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "https://159.203.54.10.nip.io/graphql" },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"query\":\"{ getMatchingResources(userId:\\\"1\\\", serviceType:HEALTH, location:{latitude:-1.286, longitude:36.817}, languages:[\\\"sw\\\"], maxDistanceKm:10) { resource { resource_id service_type } score } }\"}"
+            }
+          }
+        },
+        {
+          "name": "Resources Per Capita",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "https://159.203.54.10.nip.io/graphql" },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"query\":\"{ resourcesPerCapita { regionName category perThousandNeeded } }\"}"
+            }
+          }
+        },
+        {
+          "name": "Resource Need Gap",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "https://159.203.54.10.nip.io/graphql" },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"query\":\"{ resourceNeedGap { regionName category gap } }\"}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Inclusivity Index Service",
+      "item": [
+        {
+          "name": "Get Metrics",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "https://159.203.54.10.nip.io/graphql" },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"query\":\"{ getMetrics(regionId:101) { id category value timestamp } }\"}"
+            }
+          }
+        },
+        {
+          "name": "Compute Inclusivity Index",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "https://159.203.54.10.nip.io/graphql" },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"query\":\"{ computeInclusivityIndex(regionId:101) { taskId status } }\"}"
+            }
+          }
+        },
+        {
+          "name": "Get Task Status",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "https://159.203.54.10.nip.io/graphql" },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"query\":\"{ getTaskStatus(taskId:\\\"sample-task-id\\\") { value status error } }\"}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Geospatial Mapping Service",
+      "item": [
+        {
+          "name": "All Resource Locations",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "https://159.203.54.10.nip.io/graphql" },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"query\":\"{ allResourceLocations }\"}"
+            }
+          }
+        },
+        {
+          "name": "Service Deserts",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "https://159.203.54.10.nip.io/graphql" },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"query\":\"{ serviceDeserts(radiusKm: 20) }\"}"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+
