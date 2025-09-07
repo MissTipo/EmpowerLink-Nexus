@@ -29,15 +29,15 @@ def resolve_create_resource(_, info, organizationId, input):
     # Build the GraphQL query
     graphql_query = {
         "query": """
-            query ($organizationId: ID!) {
-                getOrganization(organizationId: $organizationId) {
-                    organizationId
+            query ($id: ID!) {
+                getOrganization(id: $id) {
+                    id
                     name
                     role
                 }
             }
         """,
-        "variables": {"organizationId": organizationId}
+        "variables": {"id": organizationId}
     }
 
     try:
