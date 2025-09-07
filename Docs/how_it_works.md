@@ -8,7 +8,7 @@
 
 - Kubernetes Ingress picks up the request since it’s bound to the kong ingress controller.
 
-- Kong checks the ingress rules you defined:
+- Kong checks the ingress defined in the kong config:
 
 - If path is /graphql → forward to api-gateway:8000.
 
