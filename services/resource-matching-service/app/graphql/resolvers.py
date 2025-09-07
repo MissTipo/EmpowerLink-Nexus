@@ -154,6 +154,8 @@ def resolve_get_matching_resources(_, info, userId, serviceType, location, age=N
     out = []
     for m in matches:
         r = db.get(Resource, m["resource_id"])
+        if not r:
+            continue
         out.append({
             "resource": ResourceOut.from_orm(r),
             "score": 1 / (1 + m["distance"]),
