@@ -1,6 +1,6 @@
 **Step 1 – Client Request**
 
-- A client (say a mobile app or USSD gateway) sends a request to 159.203.54.10.nip.io.
+- A client sends a request to 159.203.54.10.nip.io.
 
 - The request includes the path (e.g. /graphql or /ussd).
 
