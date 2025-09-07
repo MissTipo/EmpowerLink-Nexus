@@ -20,7 +20,7 @@ ROLE_TO_SERVICE_TYPE = {
 }
 
 # URL of the organization service's endpoint
-ORGANIZATION_SERVICE_URL = "http://159.203.54.10.nip.io/graphql"
+ORGANIZATION_SERVICE_URL = "http://organization-profile:8002/graphql"
 
 @mutation.field("createResource")
 def resolve_create_resource(_, info, organizationId, input):
