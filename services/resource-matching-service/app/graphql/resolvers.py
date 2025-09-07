@@ -58,7 +58,7 @@ def resolve_create_resource(_, info, organizationId, input):
             raise Exception("Organization not found")
 
         # Derive the service_type based on the role
-        service_type = ROLE_TO_SERVICE_TYPE.get(organization["role"].lower())
+        service_type = ROLE_TO_SERVICE_TYPE.get(organization["role"].lower(), "other")
         # if not service_type:
         #     raise Exception("Service type not found for the given role")
 
