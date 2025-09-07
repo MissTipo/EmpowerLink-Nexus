@@ -26,6 +26,9 @@ class ResourceOut(BaseModel):
     capacity: int
     tags: List[str]
 
+    class Config:
+        orm_mode = True
+
 class ResourceMatch(BaseModel):
     resource: ResourceOut
     score: float
