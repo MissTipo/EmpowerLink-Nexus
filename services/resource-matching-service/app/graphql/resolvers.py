@@ -140,12 +140,12 @@ def resolve_get_matching_resources(_, info, userId, serviceType, location, age=N
     # assemble kwargs for match_resources
     params = {
         "userId": userId,
-        "serviceType": serviceType,
+        "service_type": serviceType,
         "location": location,
         "age": age,
         "gender": gender,
         "languages": languages,
-        "costLevel": costLevel,
+        "cost_level": costLevel,
         "maxDistanceKm": maxDistanceKm,
         "limit": limit,
     }
