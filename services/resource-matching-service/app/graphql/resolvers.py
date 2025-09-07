@@ -6,6 +6,7 @@ from app.models import Resource, Region, DemandLog, MatchLog
 from app.schemas import ResourceOut
 from app.database import SessionLocal
 from config.settings import settings
+from ai.matching_model import match_resources
 
 # Initialize the Query and Mutation types
 query = QueryType()
