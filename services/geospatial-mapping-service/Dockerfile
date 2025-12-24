@@ -3,7 +3,7 @@ FROM python:3.10-slim
 # install PostGIS client dependencies
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-      gdal-bin libproj-dev postgresql-client-15 && \
+      gdal-bin libproj-dev postgresql-client && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
