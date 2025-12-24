@@ -71,22 +71,30 @@ jobs:
           # Generate manifests from docker-compose.yml located in the services folder root.
           kompose convert -f docker-compose.yml -o ../k8s/
 
-      - name: Set up Kubectl
-        uses: azure/setup-kubectl@v3
+      # - name: Set up Kubectl
+      #   uses: azure/setup-kubectl@v3
+      #   with:
+      #     version: 'v1.26.0'
+      #
+      # - name: Install doctl
+      #   uses: digitalocean/action-doctl@v2
+      #   with:
+      #     token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      #
+      # - name: Set Kubernetes Context
+      #   run: doctl kubernetes cluster kubeconfig save k8s-empowerlink-nexus
+      #
+      #
+      # - name: Use DO cluster context
+      #   run: kubectl config use-context do-tor1-k8s-empowerlink-nexus
+      - name: Azure Login
+        uses: azure/login@v1
         with:
-          version: 'v1.26.0'
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Install doctl
-        uses: digitalocean/action-doctl@v2
-        with:
-          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-
-      - name: Set Kubernetes Context
-        run: doctl kubernetes cluster kubeconfig save k8s-empowerlink-nexus
-
-
-      - name: Use DO cluster context
-        run: kubectl config use-context do-tor1-k8s-empowerlink-nexus
+      - name: Set AKS Credentials
+        run: |
+          az aks get-credentials --resource-group empowerlink-rg-sa --name empowerlink-aks
 
 
       # - name: Authenticate to Google Cloud
@@ -143,6 +151,6 @@ jobs:
 
       - name: Deploy to Kubernetes
         run: |
-          kubectl create -f ../k8s/api-gateway-deployment.yaml
-          kubectl create -f ../k8s/api-gateway-service.yaml
+          kubectl apply -f ../k8s/api-gateway-deployment.yaml
+          kubectl apply -f ../k8s/api-gateway-service.yaml
 
