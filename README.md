@@ -14,7 +14,7 @@ The system is built as a collection of independent microservices communicating v
 | **[API Gateway](https://github.com/MissTipo/EmpowerLink-Nexus/tree/main/services/api-gateway)**               | Central GraphQL gateway aggregating queries across services | FastAPI, Ariadne, Docker, Kubernetes       |
 | **[User Profile Service](https://github.com/MissTipo/EmpowerLink-Nexus/tree/main/services/user-profile-service)**     | Manages user profiles and authentication                     | FastAPI, Ariadne, SQLAlchemy, PostgreSQL   |
 | **[Resource Matching Service](https://github.com/MissTipo/EmpowerLink-Nexus/tree/main/services/resource-matching-service)** | AI-powered resource matching for users and NGOs               | FastAPI, Scikit-learn, Ariadne, PostgreSQL |
-| **[Inclusivity Index Service](https://github.com/MissTipo/EmpowerLink-Nexus/tree/main/services/inclusivity-index-service)** | Generates inclusivity and accessibility scores for regions    | FastAPI, Celery, Ariadne, PostgreSQL       |
+| **[Inclusivity Index Service](https://github.com/MissTipo/EmpowerLink-Nexus/tree/main/services/inclusivity-index-service)** | Generates inclusivity and accessibility scores for regions    | FastAPI, Celery, Ariadne, PostgreSQL, Redis   |
 | **[Geospatial Mapping Service](https://github.com/MissTipo/EmpowerLink-Nexus/tree/main/services/geospatial-mapping-service)** | Maps locations and services with geospatial data               | FastAPI, PostGIS, Ariadne, Docker          |
 | **[Reporting & Feedback Service](https://github.com/MissTipo/EmpowerLink-Nexus/tree/main/services/reporting-feedback-service)** | Collects and manages user feedback and incident reports        | FastAPI, Ariadne, PostgreSQL               |
 | **[Telephony Integration Service](https://github.com/MissTipo/EmpowerLink-Nexus/tree/main/services/telephony-integration-service)** | USSD & IVR interfaces for accessibility via basic mobile phones | FastAPI, Ariadne, Docker                   |
@@ -27,11 +27,11 @@ The system is built as a collection of independent microservices communicating v
 - **Ariadne** — lightweight Python GraphQL implementation
 - **PostgreSQL/PostGIS** — relational and spatial database support
 - **Docker** — containerization for local and production environments
-- **Kubernetes (GKE)** — container orchestration and deployment
+- **Kubernetes (GKE, DO KE, Azure KE)** — container orchestration and deployment(initially deployed on GKE, then migrated to Digital Ocean Kubernetes, and later to Azure Kubernetes Service)
 - **Scikit-learn** — for AI-driven resource matching
 - **Celery + Redis** — for background job processing
 - **USSD/IVR Integrations** — for mobile telephony access
-- **GraphQL Federation** — schema stitching at the API gateway
+- **GraphQL(Ariadne)** — schema stitching at the API gateway
 - **GitHub Actions** — CI/CD pipelines
 
 ---
