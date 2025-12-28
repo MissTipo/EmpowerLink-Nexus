@@ -10,7 +10,7 @@ const loggingLink = new ApolloLink((operation, forward) => {
 });
 
 const httpLink = createHttpLink({
-  uri: 'https://4.253.64.231.nip.io/graphql',
+  uri: 'https://empowerlinknexus.me/graphql',
 });
 
 const client = new ApolloClient({
