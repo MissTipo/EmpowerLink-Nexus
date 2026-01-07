@@ -31,7 +31,7 @@ class Region(Base):
     __tablename__ = "regions"
 
     region_id        = Column(Integer, primary_key=True)
-    region_name      = Column(String, nullable=False, unique=True)
+    region_name      = Column("name", String, nullable=False, unique=True)
     population_in_need = Column(Integer, nullable=False)
 
 
