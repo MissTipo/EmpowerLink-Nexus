@@ -12,7 +12,7 @@ with open(settings.transformer_path, 'rb') as f:
 with open(settings.model_path, 'rb') as f:
     nn: NearestNeighbors = pickle.load(f)
 
-# Correctly load resource_ids.pkl from the ai directory
+# Load resource_ids.pkl from the ai directory
 current_dir = os.path.dirname(__file__)
 resource_ids_path = os.path.join(current_dir, "resource_ids.pkl")
 with open(resource_ids_path, 'rb') as f:

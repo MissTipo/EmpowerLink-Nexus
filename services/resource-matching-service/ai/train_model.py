@@ -13,11 +13,10 @@ X_raw, y_train = load_data()
 vectorizer = TfidfVectorizer()
 X_train = vectorizer.fit_transform(X_raw)
 
-# === DEBUG: inspect the learned vocabulary ===
+# DEBUG: inspect the learned vocabulary
 print("Vocabulary size:", len(vectorizer.vocabulary_))
 # print first 10 terms
 print("First 10 feature names:", list(vectorizer.get_feature_names_out())[:10])
-# =============================================
 
 # Train the KNN model
 knn = KNeighborsClassifier(n_neighbors=settings.knn_n_neighbors,  metric="cosine", algorithm="brute")

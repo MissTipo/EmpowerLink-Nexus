@@ -13,12 +13,11 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
 from faker import Faker
 
-# ─── Helpers ────────────────────────────────────────────────────────────────────
 
 def ensure_tables():
     """Create tables in DB if they don't exist yet."""
     Base.metadata.create_all(bind=engine)
-    print("✅ Database tables ensured.")
+    print("Database tables ensured.")
 
 def seed_sample_resources(n=5):
     """Insert n fake Resource rows if table is empty."""
@@ -54,7 +53,7 @@ def seed_sample_resources(n=5):
         )
     db.add_all(samples)
     db.commit()
-    print(f"🌱 Seeded {n} sample resources.")
+    print(f"Seeded {n} sample resources.")
     db.close()
 
 def fetch_resources_from_db() -> pd.DataFrame:
@@ -87,9 +86,8 @@ def save_artifacts(transformer, knn, resource_ids):
         pickle.dump(knn, f)
     with open("ai/resource_ids.pkl", "wb") as f:
         pickle.dump(resource_ids, f)
-    print("✅ Artifacts saved to ai/")
+    print("Artifacts saved to ai/")
 
-# ─── Main pipeline ─────────────────────────────────────────────────────────────
 
 def build_and_save_model(seed: bool):
     ensure_tables()
@@ -98,7 +96,7 @@ def build_and_save_model(seed: bool):
 
     df = fetch_resources_from_db()
     if df.empty:
-        print("❌ No resources found in database. Use --seed to insert sample data.")
+        print("No resources found in database. Use --seed to insert sample data.")
         return
 
     transformer = build_transformer()
@@ -108,7 +106,7 @@ def build_and_save_model(seed: bool):
     knn.fit(X)
 
     save_artifacts(transformer, knn, list(df["id"]))
-    print(f"✅ KNN model trained on {len(df)} resources.")
+    print(f"KNN model trained on {len(df)} resources.")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Build & save KNN model artifacts")
