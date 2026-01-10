@@ -43,12 +43,7 @@ This microservice provides resource‐matching functionality for EmpowerLink Nex
 
 ## Architecture
 
-```Plaintext
-────────────┐ ┌───────────────┐ ┌────────────┐ │ Client / │ ─────>│ API Gateway │ ────>│ This SVC │ │ Frontend │ └───────────────┘ └────────────┘ │ (REST/GRPC)│ ▲ └────────────┘ │ ┌────────────┐ │ Database │ └────────────┘ ▲ │ ┌────────────┐ │ AI Model │ └────────────┘
-
-yaml
-Copy
-Edit
+```plaintext
 
 ```
 
